@@ -4,11 +4,12 @@ import CaseForm from "../components/CaseForm";
 import CaseList from "../components/CaseList";
 
 const Master = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [showCaseForm, setShowCaseForm] = useState(false);
 
   const navigate = useNavigate();
   const adminValidate = async () => {
-    const res = await fetch("http://localhost:4000/api/check-admin", {
+    const res = await fetch(`${apiUrl}/api/check-admin`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}`,

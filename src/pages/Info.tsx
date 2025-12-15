@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 const Info = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const token = localStorage.getItem("MJKRtoken");
   const { userId } = token ? jwtDecode<{ userId: string }>(token) : {};
@@ -18,7 +19,7 @@ const Info = () => {
     if (!validate()) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/users/change-password`, {
+      const res = await fetch(`${apiUrl}/api/users/change-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +77,7 @@ const Info = () => {
   useEffect(() => {
     const fetchJudgeCases = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/judgements/${userId}`, {
+        const res = await fetch(`${apiUrl}/api/judgements/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -98,7 +99,7 @@ const Info = () => {
   useEffect(() => {
     const fetchCommentsById = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/comments/${userId}`, {
+        const res = await fetch(`${apiUrl}/api/comments/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -120,7 +121,7 @@ const Info = () => {
   useEffect(() => {
     const fetchTotalLike = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/comment/likes/${userId}`, {
+        const res = await fetch(`${apiUrl}/api/comment/likes/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -141,7 +142,7 @@ const Info = () => {
   useEffect(() => {
     const fetchTotalDislike = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/comment/dislikes/${userId}`, {
+        const res = await fetch(`${apiUrl}/api/comment/dislikes/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

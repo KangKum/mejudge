@@ -9,6 +9,7 @@ interface ICaseItem {
   caseText: string;
 }
 const CaseList = ({ read, sort }: { read: number; sort: string }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const [cases, setCases] = useState<ICaseItem[]>([]);
   const token = localStorage.getItem("MJKRtoken");
@@ -17,19 +18,19 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
   useEffect(() => {
     const fetchCases = async () => {
       if (read === 2) {
-        const res = await fetch("http://localhost:4000/api/cases", {
+        const res = await fetch(`${apiUrl}/api/cases`, {
           method: "GET",
         });
         const data = await res.json();
         setCases(data);
       } else if (read === 1) {
-        const res = await fetch(`http://localhost:4000/api/cases?type=undone&userId=${userId}`, {
+        const res = await fetch(`${apiUrl}/api/cases?type=undone&userId=${userId}`, {
           method: "GET",
         });
         const data = await res.json();
         setCases(data);
       } else if (read === 0) {
-        const res = await fetch(`http://localhost:4000/api/cases?type=done&userId=${userId}`, {
+        const res = await fetch(`${apiUrl}/api/cases?type=done&userId=${userId}`, {
           method: "GET",
         });
         const data = await res.json();

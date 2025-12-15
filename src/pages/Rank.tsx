@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 
 const Rank = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [rankings, setRankings] = useState<Array<{ userId: string; nickname: string; totalLikes: number }>>([]);
 
   useEffect(() => {
     const fetchRankings = async () => {
-      const res = await fetch("http://localhost:4000/api/ranking/user-likes", {
+      const res = await fetch(`${apiUrl}/api/ranking/user-likes`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

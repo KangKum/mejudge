@@ -23,6 +23,7 @@ interface IComment {
 }
 
 const CasePage = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const { caseId } = useParams(); // id가 바로 caseItem._id 값
   const [caseData, setCaseData] = useState<ICaseItem | null>(null);
@@ -46,7 +47,7 @@ const CasePage = () => {
   const [latestCaseNumber, setLatestCaseNumber] = useState<number>(0);
 
   const fetchCase = async () => {
-    const res = await fetch(`http://localhost:4000/api/case/${caseId}`, {
+    const res = await fetch(`${apiUrl}/api/case/${caseId}`, {
       method: "GET",
     });
     const data = await res.json();
@@ -54,7 +55,7 @@ const CasePage = () => {
   };
   const makeComment = async () => {
     if (comment.trim() === "") return;
-    const res = await fetch(`http://localhost:4000/api/comment/${userId}/${caseId}`, {
+    const res = await fetch(`${apiUrl}/api/comment/${userId}/${caseId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
       body: JSON.stringify({ userNickname, comment }),
@@ -70,7 +71,7 @@ const CasePage = () => {
   const fetchComment = async () => {
     if (!caseId) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/comment/${caseId}?limit=${commentLimit}`, {
+      const res = await fetch(`${apiUrl}/api/comment/${caseId}?limit=${commentLimit}`, {
         method: "GET",
       });
       const data = await res.json();
@@ -98,7 +99,7 @@ const CasePage = () => {
     }
     //좋아요 기능 구현
     try {
-      const res = await fetch(`http://localhost:4000/api/like/${comment._id}`, {
+      const res = await fetch(`${apiUrl}/api/like/${comment._id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
         body: JSON.stringify({ userId }),
@@ -121,7 +122,7 @@ const CasePage = () => {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:4000/api/dislike/${comment._id}`, {
+      const res = await fetch(`${apiUrl}/api/dislike/${comment._id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
         body: JSON.stringify({ userId }),
@@ -140,7 +141,7 @@ const CasePage = () => {
   const pastCase = async () => {
     if (caseNumber === 1) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/pastCase/${caseNumber}`, {
+      const res = await fetch(`${apiUrl}/api/pastCase/${caseNumber}`, {
         method: "GET",
       });
       const previousCaseId = await res.json();
@@ -159,7 +160,7 @@ const CasePage = () => {
   const nextCase = async () => {
     if (caseNumber === latestCaseNumber) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/nextCase/${caseNumber}`, {
+      const res = await fetch(`${apiUrl}/api/nextCase/${caseNumber}`, {
         method: "GET",
       });
       const previousCaseId = await res.json();
@@ -192,7 +193,7 @@ const CasePage = () => {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:4000/api/judgement/${userId}/${caseId}`, {
+      const res = await fetch(`${apiUrl}/api/judgement/${userId}/${caseId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -221,7 +222,7 @@ const CasePage = () => {
     if (!userId || !caseId) return;
     const fetchPreviousSentence = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/judgement/${userId}/${caseId}`, {
+        const res = await fetch(`${apiUrl}/api/judgement/${userId}/${caseId}`, {
           method: "GET",
         });
         const data = await res.json();
@@ -264,7 +265,7 @@ const CasePage = () => {
   useEffect(() => {
     const fetchLatestCaseNumber = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/cases/latest`, {
+        const res = await fetch(`${apiUrl}/api/cases/latest`, {
           method: "GET",
         });
         const data = await res.json();

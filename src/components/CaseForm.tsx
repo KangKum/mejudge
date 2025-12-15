@@ -1,12 +1,14 @@
 import { useState } from "react";
 
 const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.SetStateAction<boolean>> }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [result, setResult] = useState("");
 
   const registerCase = async () => {
-    const res = await fetch("http://localhost:4000/api/case", {
+    const res = await fetch(`${apiUrl}/api/case`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
