@@ -1,0 +1,85 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const Signup = () => {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [nickname, setNickname] = useState("");
+  const navigate = useNavigate();
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    try {
+      const res = await fetch(`http://localhost:4000/api/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, password, nickname }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("회원가입이 완료되었습니다!");
+        navigate("/login");
+      } else {
+        alert(data.message || "회원가입 실패");
+      }
+    } catch (error) {
+      console.error("Failed to fetch worry. Status:", error);
+    }
+  };
+  const validate = () => {
+    const idRegex = /^[a-zA-Z0-9]{4,16}$/;
+    const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+
+    if (!idRegex.test(id)) {
+      alert("아이디는 4~16자의 영문/숫자만 가능합니다.");
+      return false;
+    }
+    if (!pwRegex.test(password)) {
+      alert("비밀번호는 8자 이상, 영문/숫자/특수문자를 포함해야 합니다.");
+      return false;
+    }
+    if (password !== confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return false;
+    }
+    if (nickname.trim() === "") {
+      alert("닉네임을 입력해주세요.");
+      return false;
+    }
+    return true;
+  };
+
+  return (
+    <div className="w-full h-full flex flex-col justify-center items-center">
+      <div className="blankSpace w-full h-30"></div>
+      <form onSubmit={handleSignup} className="w-[500px] h-[400px] flex flex-col justify-center items-center">
+        <input type="text" placeholder="아이디" className="mb-4 p-2 border rounded w-[250px]" value={id} onChange={(e) => setId(e.target.value)} />
+        <input
+          type="password"
+          placeholder="비밀번호"
+          className="mb-4 p-2 border rounded w-[250px]"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="비밀번호 확인"
+          className="mb-4 p-2 border rounded w-[250px]"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <input type="text" placeholder="닉네임" className="mb-4 p-2 border rounded w-[250px]" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded w-[250px]">
+          회원가입
+        </button>
+      </form>
+    </div>
+  );
+};
+export default Signup;
