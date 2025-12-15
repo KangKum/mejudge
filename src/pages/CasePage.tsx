@@ -63,7 +63,7 @@ const CasePage = () => {
     if (res.ok) {
       setComment("");
       alert("댓글이 등록되었습니다.");
-      window.location.reload();
+      fetchComment();
     } else {
       alert("댓글 전송 실패");
     }
