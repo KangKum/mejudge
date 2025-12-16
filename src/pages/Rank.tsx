@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 const Rank = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [rankings, setRankings] = useState<Array<{ userId: string; nickname: string; totalLikes: number }>>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [loadingText, setLoadingText] = useState("랭킹 확인중");
 
   useEffect(() => {
     const fetchRankings = async () => {
@@ -13,13 +15,24 @@ const Rank = () => {
         },
       });
       const data = await res.json();
-      console.log(data);
       if (res.status === 200) {
         setRankings(data);
+        setTimeout(() => setLoading(false), 1500);
       }
     };
     fetchRankings();
   }, []);
+
+  useEffect(() => {
+    if (!loading) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      setLoadingText("랭킹 확인중" + ".".repeat((i % 3) + 1));
+      i++;
+    }, 500);
+    return () => clearInterval(interval);
+  }, [loading]);
+
   return (
     <div className="md:w-[40%] w-[85%] flex flex-col mx-auto items-center">
       <div className="blankSpace h-8 md:h-12"></div>
@@ -30,13 +43,19 @@ const Rank = () => {
           <div className="w-[50%] h-full flex justify-center items-center md:text-xl text-lg border">닉네임</div>
           <div className="w-[35%] h-full flex justify-center items-center md:text-xl text-lg border">좋아요 수</div>
         </div>
-        {rankings.map((user, index) => (
-          <div key={index} className="flex w-full h-10 justify-center items-center">
-            <div className="w-[15%] h-full flex justify-center items-center">{index + 1}</div>
-            <div className="w-[50%] h-full flex justify-center items-center">{user.nickname}</div>
-            <div className="w-[35%] h-full flex justify-center items-center">{user.totalLikes}개</div>
+        {loading ? (
+          <div className="w-full mt-20 flex justify-center">{loadingText}</div>
+        ) : (
+          <div className="w-full overflow-y-auto overflow-x-hidden">
+            {rankings.map((user, index) => (
+              <div key={index} className="flex w-full h-10 justify-center items-center">
+                <div className="w-[15%] h-full flex justify-center items-center">{index + 1}</div>
+                <div className="w-[50%] h-full flex justify-center items-center">{user.nickname}</div>
+                <div className="w-[35%] h-full flex justify-center items-center">{user.totalLikes}개</div>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

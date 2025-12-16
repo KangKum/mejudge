@@ -15,6 +15,7 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
   const token = localStorage.getItem("MJKRtoken");
   const { userId } = token ? jwtDecode<{ userId: string }>(token) : {};
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingText, setLoadingText] = useState("사건 분류중");
 
   useEffect(() => {
     const fetchCases = async () => {
@@ -32,20 +33,30 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
       }
       if (res) {
         setCases(data);
-        setTimeout(() => setLoading(false), 2000);
+        setTimeout(() => setLoading(false), 1500);
       }
     };
     fetchCases();
   }, []);
 
+  useEffect(() => {
+    if (!loading) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      setLoadingText("사건 분류중" + ".".repeat((i % 3) + 1));
+      i++;
+    }, 500);
+    return () => clearInterval(interval);
+  }, [loading]);
+
   return (
-    <div className="caseContainer w-[340px] md:min-w-[430px] h-[400px] md:h-[500px] border-2 flex flex-col">
+    <div className={`caseContainer w-[340px] md:min-w-[430px] ${read === 2 ? "h-[580px]" : "h-[400px]"} md:h-[500px] border-2 flex flex-col`}>
       <div className="w-full min-h-10 md:min-h-12 text-sm md:text-lg flex bg-white text-black">
         <div className="w-[20%] h-full text-sm md:text-lg flex justify-center items-center">사건번호</div>
         <span className="w-[80%] h-full text-sm md:text-lg flex justify-center items-center">{sort}</span>
       </div>
       {loading ? (
-        <div>사건 분류중...</div>
+        <div className="w-full h-full flex justify-center items-center">{loadingText}</div>
       ) : (
         <div className="overflow-y-auto overflow-x-hidden">
           {cases.map((caseItem, index) => (
