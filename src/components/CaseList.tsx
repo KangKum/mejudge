@@ -14,7 +14,6 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
   const [cases, setCases] = useState<ICaseItem[]>([]);
   const token = localStorage.getItem("MJKRtoken");
   const { userId } = token ? jwtDecode<{ userId: string }>(token) : {};
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchCases = async () => {
@@ -33,14 +32,11 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
       if (res) {
         setCases(data);
       }
-      setTimeout(() => setLoading(false), 2000);
     };
     fetchCases();
   }, []);
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
+  return (
     <div className="caseContainer w-[340px] md:min-w-[430px] h-[400px] md:h-[500px] border-2 flex flex-col">
       <div className="w-full min-h-10 md:min-h-12 text-sm md:text-lg flex bg-white text-black">
         <div className="w-[20%] h-full text-sm md:text-lg flex justify-center items-center">사건번호</div>
