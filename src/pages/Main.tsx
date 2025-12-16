@@ -1,9 +1,13 @@
 import CaseList from "../components/CaseList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Main = () => {
   const isLoggedIn = !!localStorage.getItem("MJKRtoken");
   const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 2000);
+  }, []);
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
