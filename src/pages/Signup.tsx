@@ -23,9 +23,11 @@ const Signup = () => {
       });
 
       const data = await res.json();
-      if (res.ok) {
+      if (res.status === 200) {
         alert("회원가입이 완료되었습니다!");
         navigate("/login");
+      } else if (res.status === 400 || res.status === 401) {
+        alert(data.message || "회원가입 실패");
       } else {
         alert(data.message || "회원가입 실패");
       }
@@ -57,7 +59,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center">
+    <div className="w-full h-full flex flex-col justify-center items-center overflow-y-hidden">
       <div className="blankSpace w-full h-30"></div>
       <form onSubmit={handleSignup} className="w-[500px] h-[400px] flex flex-col justify-center items-center">
         <input type="text" placeholder="아이디" className="mb-4 p-2 border rounded w-[250px]" value={id} onChange={(e) => setId(e.target.value)} />
