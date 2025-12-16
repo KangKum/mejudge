@@ -18,22 +18,22 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
 
   useEffect(() => {
     const fetchCases = async () => {
-      try {
-        let res, data;
-        if (read === 2) {
-          res = await fetch(`${apiUrl}/api/cases`, { method: "GET" });
-        } else if (read === 1) {
-          res = await fetch(`${apiUrl}/api/cases?type=undone&userId=${userId}`, { method: "GET" });
-        } else if (read === 0) {
-          res = await fetch(`${apiUrl}/api/cases?type=done&userId=${userId}`, { method: "GET" });
-        }
-        if (res) {
-          data = await res.json();
-          setCases(data);
-        }
-      } finally {
-        setLoading(false);
+      let res;
+      let data = [];
+      if (read === 2) {
+        res = await fetch(`${apiUrl}/api/cases`, { method: "GET" });
+        data = await res.json();
+      } else if (read === 1) {
+        res = await fetch(`${apiUrl}/api/cases?type=undone&userId=${userId}`, { method: "GET" });
+        data = await res.json();
+      } else if (read === 0) {
+        res = await fetch(`${apiUrl}/api/cases?type=done&userId=${userId}`, { method: "GET" });
+        data = await res.json();
       }
+      if (res) {
+        setCases(data);
+      }
+      setTimeout(() => setLoading(false), 2000);
     };
     fetchCases();
   }, []);
