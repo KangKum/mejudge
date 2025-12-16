@@ -26,7 +26,7 @@ const Signup = () => {
       if (res.status === 200) {
         alert("회원가입이 완료되었습니다!");
         navigate("/login");
-      } else if (res.status === 400 || res.status === 401) {
+      } else if (res.status === 400 || res.status === 401 || res.status === 402 || res.status === 403) {
         alert(data.message || "회원가입 실패");
       } else {
         alert(data.message || "회원가입 실패");
