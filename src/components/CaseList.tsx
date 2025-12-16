@@ -14,6 +14,7 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
   const [cases, setCases] = useState<ICaseItem[]>([]);
   const token = localStorage.getItem("MJKRtoken");
   const { userId } = token ? jwtDecode<{ userId: string }>(token) : {};
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchCases = async () => {
@@ -31,6 +32,7 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
       }
       if (res) {
         setCases(data);
+        setTimeout(() => setLoading(false), 2000);
       }
     };
     fetchCases();
@@ -42,20 +44,24 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
         <div className="w-[20%] h-full text-sm md:text-lg flex justify-center items-center">사건번호</div>
         <span className="w-[80%] h-full text-sm md:text-lg flex justify-center items-center">{sort}</span>
       </div>
-      <div className="overflow-y-auto overflow-x-hidden">
-        {cases.map((caseItem, index) => (
-          <div
-            key={index}
-            className="w-full h-12 px-1 text-sm md:text-lg flex hover:bg-gray-400 cursor-pointer"
-            onClick={() => navigate(`/case/${caseItem._id}`)}
-          >
-            <div className="w-[20%] h-full text-sm md:text-lg flex justify-center items-center border-b">{caseItem.caseNumber}</div>
-            <span className="w-[80%] h-full text-sm md:text-lg flex items-center border-b pl-3">
-              {caseItem.caseTitle?.length > 18 ? caseItem.caseTitle.slice(0, 18) + "..." : caseItem.caseTitle}
-            </span>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <div>사건 분류중...</div>
+      ) : (
+        <div className="overflow-y-auto overflow-x-hidden">
+          {cases.map((caseItem, index) => (
+            <div
+              key={index}
+              className="w-full h-12 px-1 text-sm md:text-lg flex hover:bg-gray-400 cursor-pointer"
+              onClick={() => navigate(`/case/${caseItem._id}`)}
+            >
+              <div className="w-[20%] h-full text-sm md:text-lg flex justify-center items-center border-b">{caseItem.caseNumber}</div>
+              <span className="w-[80%] h-full text-sm md:text-lg flex items-center border-b pl-3">
+                {caseItem.caseTitle?.length > 18 ? caseItem.caseTitle.slice(0, 18) + "..." : caseItem.caseTitle}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
