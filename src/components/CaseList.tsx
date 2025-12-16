@@ -14,33 +14,33 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
   const [cases, setCases] = useState<ICaseItem[]>([]);
   const token = localStorage.getItem("MJKRtoken");
   const { userId } = token ? jwtDecode<{ userId: string }>(token) : {};
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchCases = async () => {
-      if (read === 2) {
-        const res = await fetch(`${apiUrl}/api/cases`, {
-          method: "GET",
-        });
-        const data = await res.json();
-        setCases(data);
-      } else if (read === 1) {
-        const res = await fetch(`${apiUrl}/api/cases?type=undone&userId=${userId}`, {
-          method: "GET",
-        });
-        const data = await res.json();
-        setCases(data);
-      } else if (read === 0) {
-        const res = await fetch(`${apiUrl}/api/cases?type=done&userId=${userId}`, {
-          method: "GET",
-        });
-        const data = await res.json();
-        setCases(data);
+      try {
+        let res, data;
+        if (read === 2) {
+          res = await fetch(`${apiUrl}/api/cases`, { method: "GET" });
+        } else if (read === 1) {
+          res = await fetch(`${apiUrl}/api/cases?type=undone&userId=${userId}`, { method: "GET" });
+        } else if (read === 0) {
+          res = await fetch(`${apiUrl}/api/cases?type=done&userId=${userId}`, { method: "GET" });
+        }
+        if (res) {
+          data = await res.json();
+          setCases(data);
+        }
+      } finally {
+        setLoading(false);
       }
     };
     fetchCases();
   }, []);
 
-  return (
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <div className="caseContainer w-[340px] md:min-w-[430px] h-[400px] md:h-[500px] border-2 flex flex-col">
       <div className="w-full min-h-10 md:min-h-12 text-sm md:text-lg flex bg-white text-black">
         <div className="w-[20%] h-full text-sm md:text-lg flex justify-center items-center">사건번호</div>
