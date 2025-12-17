@@ -39,12 +39,14 @@ const CasePage = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Array<IComment>>([]);
   const [commentLimit, setCommentLimit] = useState(3);
+  const [commentCount, setCommentCount] = useState(0);
   // useEffect에서 해야하나?
   const token = localStorage.getItem("MJKRtoken");
   const { userId } = token ? jwtDecode<{ userId: string }>(token) : {};
   const userNickname = localStorage.getItem("MJKRnickname") || "";
   const caseNumber = caseData?.caseNumber;
   const [latestCaseNumber, setLatestCaseNumber] = useState<number>(0);
+  const [isCommenting, setIsCommenting] = useState<boolean>(false);
 
   const fetchCase = async () => {
     const res = await fetch(`${apiUrl}/api/case/${caseId}`, {
@@ -54,7 +56,8 @@ const CasePage = () => {
     setCaseData(data);
   };
   const makeComment = async () => {
-    if (comment.trim() === "") return;
+    if (comment.trim() === "" || isCommenting) return;
+    setIsCommenting(true);
     const res = await fetch(`${apiUrl}/api/comment/${userId}/${caseId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
@@ -67,6 +70,7 @@ const CasePage = () => {
     } else {
       alert("댓글 전송 실패");
     }
+    setIsCommenting(false);
   };
   const fetchComment = async () => {
     if (!caseId) return;
@@ -76,6 +80,18 @@ const CasePage = () => {
       });
       const data = await res.json();
       setComments(data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+  const fetchAllComments = async () => {
+    if (!caseId) return;
+    try {
+      const res = await fetch(`${apiUrl}/api/comment/count/${caseId}`, {
+        method: "GET",
+      });
+      const data = await res.json();
+      setCommentCount(data);
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
@@ -97,6 +113,12 @@ const CasePage = () => {
       navigate("/login");
       return;
     }
+
+    //프론트 먼저 반영
+    setComments((prev) =>
+      prev.map((c) => (c._id === comment._id ? { ...c, likes: c.likes.includes(userId) ? c.likes.filter((id) => id !== userId) : [...c.likes, userId] } : c))
+    );
+
     //좋아요 기능 구현
     try {
       const res = await fetch(`${apiUrl}/api/like/${comment._id}`, {
@@ -104,12 +126,9 @@ const CasePage = () => {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
         body: JSON.stringify({ userId }),
       });
-      if (res.ok) {
-        setComments((prev) =>
-          prev.map((c) =>
-            c._id === comment._id ? { ...c, likes: c.likes.includes(userId) ? c.likes.filter((id) => id !== userId) : [...c.likes, userId] } : c
-          )
-        );
+      if (res.status !== 200) {
+        //실패 시 프론트 롤백
+        fetchComment();
       }
     } catch (error) {
       console.error("Error liking comment:", error);
@@ -121,18 +140,21 @@ const CasePage = () => {
       navigate("/login");
       return;
     }
+    //프론트 먼저 반영
+    setComments((prev) =>
+      prev.map((c) =>
+        c._id === comment._id ? { ...c, dislikes: c.dislikes.includes(userId) ? c.dislikes.filter((id) => id !== userId) : [...c.dislikes, userId] } : c
+      )
+    );
     try {
       const res = await fetch(`${apiUrl}/api/dislike/${comment._id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
         body: JSON.stringify({ userId }),
       });
-      if (res.ok) {
-        setComments((prev) =>
-          prev.map((c) =>
-            c._id === comment._id ? { ...c, dislikes: c.dislikes.includes(userId) ? c.dislikes.filter((id) => id !== userId) : [...c.dislikes, userId] } : c
-          )
-        );
+      if (res.status !== 200) {
+        //실패 시 프론트 롤백
+        fetchComment();
       }
     } catch (error) {
       console.error("Error liking comment:", error);
@@ -216,6 +238,7 @@ const CasePage = () => {
   useEffect(() => {
     if (!caseId) return;
     fetchCase();
+    fetchAllComments();
   }, [caseId]);
 
   useEffect(() => {
@@ -295,7 +318,7 @@ const CasePage = () => {
         <div className="webtoonPart w-full"></div>
         <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px]">{caseData?.caseText}</div>
         <div className="commentPart w-full mt-6">
-          <div className="commentUpPart h-8 text-lg my-2">댓글({comments.length})</div>
+          <div className="commentUpPart h-8 text-lg my-2">댓글({commentCount})</div>
           <div className="commentMiddlePart flex flex-col items-center p-2 border">
             <div className="idPart w-full mb-1">{userNickname}</div>
             <textarea
@@ -390,7 +413,7 @@ const CasePage = () => {
           ) : (
             <div className="flex flex-col items-center">
               <div className="w-full h-20 md:h-30 flex justify-center items-center text-2xl font-bold">{(fine ?? 0).toLocaleString()}원</div>
-              <div className="w-[90%] md:h-12 flex justify-center items-center gap-2 mb-1">
+              <div className="w-[98%] md:h-12 flex justify-center items-center gap-2 mb-1">
                 <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10" onClick={() => setFine((prev) => prev + 100000000)}>
                   +1억
                 </button>
@@ -407,7 +430,7 @@ const CasePage = () => {
                   +1만원
                 </button>
               </div>
-              <div className="w-[90%] md:h-12 flex justify-center items-center gap-2">
+              <div className="w-[98%] md:h-12 flex justify-center items-center gap-2">
                 <button
                   disabled={isSentenced}
                   className="border flex-1 text-xs md:text-base h-10"

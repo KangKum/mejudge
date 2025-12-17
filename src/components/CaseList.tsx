@@ -59,18 +59,22 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
         <div className="w-full h-full flex justify-center items-center">{loadingText}</div>
       ) : (
         <div className="overflow-y-auto overflow-x-hidden">
-          {cases.map((caseItem, index) => (
-            <div
-              key={index}
-              className="w-full h-12 px-1 text-sm md:text-lg flex hover:bg-gray-400 cursor-pointer"
-              onClick={() => navigate(`/case/${caseItem._id}`)}
-            >
-              <div className="w-[20%] h-full text-sm md:text-lg flex justify-center items-center border-b">{caseItem.caseNumber}</div>
-              <span className="w-[80%] h-full text-sm md:text-lg flex items-center border-b pl-3">
-                {caseItem.caseTitle?.length > 18 ? caseItem.caseTitle.slice(0, 18) + "..." : caseItem.caseTitle}
-              </span>
-            </div>
-          ))}
+          {cases.length > 0 ? (
+            cases.map((caseItem, index) => (
+              <div
+                key={index}
+                className="w-full h-12 px-1 text-sm md:text-lg flex hover:bg-gray-400 cursor-pointer"
+                onClick={() => navigate(`/case/${caseItem._id}`)}
+              >
+                <div className="w-[20%] h-full text-sm md:text-lg flex justify-center items-center border-b">{caseItem.caseNumber}</div>
+                <span className="w-[80%] h-full text-sm md:text-lg flex items-center border-b pl-3">
+                  {caseItem.caseTitle?.length > 18 ? caseItem.caseTitle.slice(0, 18) + "..." : caseItem.caseTitle}
+                </span>
+              </div>
+            ))
+          ) : (
+            <div className="w-full mt-40 md:mt-46 flex justify-center items-center text-gray-500">해당되는 사건이 없습니다</div>
+          )}
         </div>
       )}
     </div>

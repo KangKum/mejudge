@@ -6,8 +6,11 @@ const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.S
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [result, setResult] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const registerCase = async () => {
+    if (isRegistering) return;
+    setIsRegistering(true);
     const res = await fetch(`${apiUrl}/api/case`, {
       method: "POST",
       headers: {
@@ -23,6 +26,7 @@ const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.S
       alert(data.message || "사건 등록에 실패했습니다.");
     }
     setShowCaseForm(false);
+    setIsRegistering(false);
   };
 
   return (
