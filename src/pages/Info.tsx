@@ -161,7 +161,7 @@ const Info = () => {
   }, [userId]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center cursor-default">
       <div className="blankSpace w-full h-30"></div>
       <div className="flex flex-col items-center w-[40%] md:w-[15%]">
         <div className="w-full h-14 text-xl flex justify-center font-bold">{localStorage.getItem("MJKRnickname")}</div>
