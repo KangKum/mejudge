@@ -11,9 +11,9 @@ button {
   outline: none;
   cursor: pointer;
 }
-button:active {
+/* button:active {
   transform: scale(0.95);
-}
+} */
 textarea {
   outline: none;
   resize: none;
