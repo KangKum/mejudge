@@ -42,7 +42,7 @@ const PrivacyForm = ({ setShowPrivacyForm }: { setShowPrivacyForm: React.Dispatc
         </div>
         <div className="text-lg mt-4">7. 개인정보 보호책임자</div>
         <div className="pl-5">
-          <div>mejudge@google.com</div>
+          <div>askmejudge@google.com</div>
         </div>
         <div className="text-lg mt-4">8. 개인정보처리방침 변경</div>
         <div className="pl-5">본 개인정보처리방침은 법령 또는 서비스 변경에 따라 수정될 수 있으며, 변경 시 서비스 내 공지를 통해 안내합니다.</div>

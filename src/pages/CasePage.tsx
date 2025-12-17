@@ -239,6 +239,7 @@ const CasePage = () => {
     if (!caseId) return;
     fetchCase();
     fetchAllComments();
+    window.scrollTo(0, 0);
   }, [caseId]);
 
   useEffect(() => {
@@ -316,7 +317,7 @@ const CasePage = () => {
         </div>
         <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-6 text-xl">{caseData?.caseTitle}</div>
         <div className="webtoonPart w-full"></div>
-        <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px]">{caseData?.caseText}</div>
+        <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px] px-1">{caseData?.caseText}</div>
         <div className="commentPart w-full mt-6">
           <div className="commentUpPart h-8 text-lg my-2">댓글({commentCount})</div>
           <div className="commentMiddlePart flex flex-col items-center p-2 border">
@@ -481,6 +482,14 @@ const CasePage = () => {
         </div>
         <div className="blankSpace h-2"></div>
         {!isSentenced && <div className="w-full h-10 flex justify-center">선고 후에 실제 판결을 확인할 수 있습니다</div>}
+        <div className="w-full h-10 flex justify-between">
+          <button className={`hover:font-bold text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : ""}`} onClick={async () => pastCase()}>
+            이전 사건
+          </button>
+          <button className={`hover:font-bold text-sm md:text-base ${caseNumber === latestCaseNumber ? "text-gray-500" : ""}`} onClick={async () => nextCase()}>
+            다음 사건
+          </button>
+        </div>
       </div>
     </div>
   );
