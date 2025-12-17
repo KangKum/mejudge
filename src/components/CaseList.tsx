@@ -50,15 +50,15 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
   }, [loading]);
 
   return (
-    <div className={`caseContainer w-[340px] md:min-w-[430px] ${read === 2 ? "h-[580px]" : "h-[400px]"} md:h-[500px] border-2 flex flex-col`}>
-      <div className="w-full min-h-10 md:min-h-12 text-sm md:text-lg flex bg-white text-black">
+    <div className={`caseContainer w-[340px] md:min-w-[430px] ${read === 2 ? "h-[580px]" : "h-[400px]"} md:h-[500px] border-4 border-white/90 flex flex-col`}>
+      <div className="w-full min-h-10 md:min-h-12 text-sm md:text-lg flex bg-white/90 text-black">
         <div className="w-[20%] h-full text-sm md:text-lg flex justify-center items-center">사건번호</div>
         <span className="w-[80%] h-full text-sm md:text-lg flex justify-center items-center">{sort}</span>
       </div>
       {loading ? (
         <div className="w-full h-full flex justify-center items-center">{loadingText}</div>
       ) : (
-        <div className="overflow-y-auto overflow-x-hidden">
+        <div className={`overflow-y-auto overflow-x-hidden ${read === 1 ? "text-gray-500" : ""}`}>
           {cases.length > 0 ? (
             cases.map((caseItem, index) => (
               <div
@@ -67,8 +67,8 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
                 onClick={() => navigate(`/case/${caseItem._id}`)}
               >
                 <div className="w-[20%] h-full text-sm md:text-lg flex justify-center items-center border-b">{caseItem.caseNumber}</div>
-                <span className="w-[80%] h-full text-sm md:text-lg flex items-center border-b pl-3">
-                  {caseItem.caseTitle?.length > 18 ? caseItem.caseTitle.slice(0, 18) + "..." : caseItem.caseTitle}
+                <span className="w-[80%] h-full text-sm md:text-lg flex items-center border-b pl-5">
+                  {caseItem.caseTitle?.length > 20 ? caseItem.caseTitle.slice(0, 20) + "..." : caseItem.caseTitle}
                 </span>
               </div>
             ))

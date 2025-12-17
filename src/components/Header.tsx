@@ -6,25 +6,30 @@ const Header = () => {
   const isLoggedIn = !!localStorage.getItem("MJKRtoken");
 
   return (
-    <header className="w-full h-[6%] flex bg-white text-black">
-      <div className="leftPart md:w-[20%] h-full"></div>
-      <div className="middlePart w-[70%] md:w-[60%] h-full flex justify-center items-center">
+    <header className="w-full h-[6%] flex justify-between md:justify-center items-center bg-black text-white">
+      <div className="buttonsPart md:w-[90%] h-full flex justify-center items-center ml-3">
         <button
-          className={`md:flex-none flex-1 md:w-[120px] h-full ${pathname === "/main" ? "bg-gray-500" : ""} hover:bg-gray-400 hover:cursor-pointer`}
+          className={`md:flex-none w-20 md:ml-34 md:w-[100px] h-full border-black border-b-2 mr-1 ${
+            pathname === "/main" ? "font-bold border-b-2 border-white" : ""
+          } ${pathname === "/main" ? "" : "hover:border-b-2 hover:border-white/50"} `}
           onClick={() => navigate("/main")}
         >
           사건
         </button>
         <button
-          className={`md:flex-none flex-1 md:w-[120px] h-full ${pathname === "/rank" ? "bg-gray-500" : ""} hover:bg-gray-400 hover:cursor-pointer`}
+          className={`md:flex-none w-20 md:w-[100px] h-full border-black border-b-2 mr-1 ${pathname === "/rank" ? "font-bold border-b-2 border-white" : ""} ${
+            pathname === "/rank" ? "" : "hover:border-b-2 hover:border-white/50"
+          }`}
           onClick={() => navigate("/rank")}
         >
           랭킹
         </button>
       </div>
-      <div className="rightPart w-[30%] md:w-[20%] h-full flex justify-end items-center">
+      <div className="loginPart md:w-[10%] h-full flex justify-end items-center">
         <button
-          className={`h-full flex items-center justify-end px-4 ${pathname === "/login" ? "bg-gray-500" : ""} hover:font-bold hover:cursor-pointer`}
+          className={`flex items-center justify-end mr-4 rounded-lg text-sm md:text-base bg-white/70 px-2 py-1 ${
+            pathname === "/login" || pathname === "/info" ? "font-bold" : ""
+          } hover:font-bold`}
           onClick={() => {
             if (isLoggedIn) {
               navigate("/info");
@@ -33,7 +38,7 @@ const Header = () => {
             }
           }}
         >
-          {isLoggedIn ? localStorage.getItem("MJKRnickname") : "로그인"}
+          {isLoggedIn ? <span className="font-bold">{localStorage.getItem("MJKRnickname")}</span> : "로그인"}
         </button>
       </div>
     </header>
