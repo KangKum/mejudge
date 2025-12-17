@@ -383,12 +383,16 @@ const CasePage = () => {
                 </div>
               </div>
             ))}
-            <button className="my-2 p-2 flex justify-center items-center gap-2 w-[60%] mx-auto" onClick={() => setCommentLimit((prev) => prev + 10)}>
-              <span>더보기</span>{" "}
-              <span>
-                <IoIosArrowDown size={18} />
-              </span>
-            </button>
+            {commentCount === comments.length ? (
+              ""
+            ) : (
+              <button className="my-2 p-2 flex justify-center items-center gap-2 w-[60%] mx-auto" onClick={() => setCommentLimit((prev) => prev + 10)}>
+                <span>더보기</span>{" "}
+                <span>
+                  <IoIosArrowDown size={18} />
+                </span>
+              </button>
+            )}
           </div>
         </div>
         <div className="footerPart w-full pb-2 flex flex-col border mt-2">
