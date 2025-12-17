@@ -6,7 +6,7 @@ const Header = () => {
   const isLoggedIn = !!localStorage.getItem("MJKRtoken");
 
   return (
-    <header className="w-full h-[6%] bg-black flex text-white">
+    <header className="w-full h-[6%] flex bg-white text-black">
       <div className="leftPart md:w-[20%] h-full"></div>
       <div className="middlePart w-[70%] md:w-[60%] h-full flex justify-center items-center">
         <button
