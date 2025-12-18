@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { MdGavel } from "react-icons/md";
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa6";
+import { FaCommentAlt } from "react-icons/fa";
 
 const Info = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -162,28 +165,51 @@ const Info = () => {
 
   return (
     <div className="flex flex-col items-center cursor-default">
-      <div className="blankSpace w-full h-30"></div>
-      <div className="flex flex-col items-center w-[40%] md:w-[15%]">
-        <div className="w-full h-14 text-xl flex justify-center font-bold">{localStorage.getItem("MJKRnickname")}</div>
-        <div className="w-full flex text-xl h-12">
-          <div className="w-[60%] h-full flex justify-start">선고 완료</div>
-          <div className="w-[40%] h-full flex justify-end">{judgeCases}건</div>
-        </div>
-        <div className="w-full flex text-xl h-12">
-          <div className="w-[60%] h-full flex justify-start">내 댓글</div>
-          <div className="w-[40%] h-full flex justify-end">{commentCount}개</div>
-        </div>
-        <div className="w-full flex text-xl h-12">
-          <div className="w-[60%] h-full flex justify-start">받은 좋아요</div>
-          <div className="w-[40%] h-full flex justify-end">{totalLikes}개</div>
-        </div>
-        <div className="w-full flex text-xl h-12">
-          <div className="w-[60%] h-full flex justify-start">받은 싫어요</div>
-          <div className="w-[40%] h-full flex justify-end">{totalDislikes}개</div>
+      <div className="blankSpace w-full h-30 md:h-45"></div>
+      <div className="flex flex-col items-center w-[45%] md:w-[35%]">
+        <div className="w-full md:h-30 flex flex-col md:flex-row md:justify-between gap-3">
+          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500">
+            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
+              <MdGavel size={30} />
+            </div>
+            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{judgeCases}건</div>
+          </div>
+
+          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500">
+            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
+              <FaCommentAlt size={28} />
+            </div>
+            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{commentCount}개</div>
+          </div>
+
+          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500">
+            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
+              <FaThumbsUp size={28} />
+            </div>
+            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{totalLikes}개</div>
+          </div>
+
+          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500">
+            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
+              <FaThumbsDown size={28} />
+            </div>
+            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{totalDislikes}개</div>
+          </div>
         </div>
       </div>
+      <div className="blankSpace w-full h-20 md:h-40"></div>
+      <button
+        className="bg-gray-500 p-2"
+        onClick={() => {
+          localStorage.removeItem("MJKRtoken");
+          localStorage.removeItem("MJKRnickname");
+          navigate("/");
+        }}
+      >
+        로그아웃
+      </button>
       <div className="blankSpace w-full h-10"></div>
-      <button className="bg-gray-500 p-2" onClick={() => setShowPasswordChange(true)}>
+      <button className="text-sm text-gray-400" onClick={() => setShowPasswordChange(!showPasswordChange)}>
         비밀번호 변경
       </button>
       {showPasswordChange && (
@@ -199,17 +225,8 @@ const Info = () => {
           <button onClick={async () => changePW()}>변경</button>
         </div>
       )}
-      <div className="blankSpace w-full h-10"></div>
-      <button
-        className="bg-gray-500 p-2"
-        onClick={() => {
-          localStorage.removeItem("MJKRtoken");
-          localStorage.removeItem("MJKRnickname");
-          navigate("/");
-        }}
-      >
-        로그아웃
-      </button>
+      <div className="blankSpace w-full h-5"></div>
+      {!showPasswordChange && <button className="text-sm text-gray-400">계정탈퇴</button>}
     </div>
   );
 };
