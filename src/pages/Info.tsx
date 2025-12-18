@@ -17,6 +17,8 @@ const Info = () => {
   const [showPasswordChange, setShowPasswordChange] = useState<boolean>(false);
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
+  const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const changePW = async () => {
     if (!validate()) return;
@@ -76,6 +78,27 @@ const Info = () => {
 
     return true;
   };
+  const deleteAccount = async () => {
+    const res = await fetch(`${apiUrl}/api/users/delete-account`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}`,
+      },
+      body: JSON.stringify({
+        confirmPassword,
+      }),
+    });
+    const data = await res.json();
+    if (res.status === 200) {
+      localStorage.removeItem("MJKRtoken");
+      localStorage.removeItem("MJKRnickname");
+      alert("계정이 성공적으로 삭제되었습니다.");
+      navigate("/");
+    } else {
+      alert(data.message || "계정 삭제에 실패했습니다.");
+    }
+  };
 
   useEffect(() => {
     const fetchJudgeCases = async () => {
@@ -88,7 +111,6 @@ const Info = () => {
           },
         });
         const data = await res.json();
-        console.log(data);
         if (res.ok) {
           setJudgeCases(data);
         }
@@ -110,7 +132,6 @@ const Info = () => {
           },
         });
         const data = await res.json();
-        console.log(data);
         if (res.ok) {
           setCommentCount(data);
         }
@@ -226,7 +247,23 @@ const Info = () => {
         </div>
       )}
       <div className="blankSpace w-full h-5"></div>
-      {!showPasswordChange && <button className="text-sm text-gray-400">계정탈퇴</button>}
+      {!showPasswordChange && (
+        <button className="text-sm text-gray-400" onClick={() => setShowConfirmDelete(!showConfirmDelete)}>
+          계정탈퇴
+        </button>
+      )}
+      {showConfirmDelete && (
+        <div className="flex flex-col items-center mt-4">
+          <input
+            type="password"
+            placeholder="비밀번호"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="border p-2 mb-2"
+          />
+          <button onClick={async () => deleteAccount()}>탈퇴</button>
+        </div>
+      )}
     </div>
   );
 };
