@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { IoIosArrowDown } from "react-icons/io";
 
 interface ICaseItem {
   _id: string;
@@ -16,28 +17,31 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
   const { userId } = token ? jwtDecode<{ userId: string }>(token) : {};
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingText, setLoadingText] = useState("사건 분류중");
+  const [caseLimit, setCaseLimit] = useState<number>(10);
+  const [caseCount, setCaseCount] = useState(0);
 
   useEffect(() => {
     const fetchCases = async () => {
       let res;
       let data = [];
       if (read === 2) {
-        res = await fetch(`${apiUrl}/api/cases`, { method: "GET" });
+        res = await fetch(`${apiUrl}/api/cases?limit=${caseLimit}`, { method: "GET" });
         data = await res.json();
       } else if (read === 1) {
-        res = await fetch(`${apiUrl}/api/cases?type=undone&userId=${userId}`, { method: "GET" });
+        res = await fetch(`${apiUrl}/api/cases?type=undone&userId=${userId}&limit=${caseLimit}`, { method: "GET" });
         data = await res.json();
       } else if (read === 0) {
-        res = await fetch(`${apiUrl}/api/cases?type=done&userId=${userId}`, { method: "GET" });
+        res = await fetch(`${apiUrl}/api/cases?type=done&userId=${userId}&limit=${caseLimit}`, { method: "GET" });
         data = await res.json();
       }
       if (res) {
-        setCases(data);
+        setCaseCount(data.totalCases);
+        setCases(data.selectedCases);
         setTimeout(() => setLoading(false), 1500);
       }
     };
     fetchCases();
-  }, []);
+  }, [caseLimit]);
 
   useEffect(() => {
     if (!loading) return;
@@ -74,6 +78,14 @@ const CaseList = ({ read, sort }: { read: number; sort: string }) => {
             ))
           ) : (
             <div className="w-full mt-40 md:mt-46 flex justify-center items-center text-gray-500">해당되는 사건이 없습니다</div>
+          )}
+          {caseCount > cases.length && (
+            <button className="my-2 p-2 flex justify-center items-center gap-2 w-[60%] mx-auto" onClick={() => setCaseLimit((prev) => prev + 3)}>
+              <span>더보기</span>{" "}
+              <span>
+                <IoIosArrowDown size={18} />
+              </span>
+            </button>
           )}
         </div>
       )}
