@@ -35,7 +35,7 @@ const Header = () => {
       </div>
       <div className="loginPart md:w-[10%] h-full flex justify-end items-center">
         <button
-          className={`flex items-center justify-end mr-4 rounded-lg text-sm md:text-base bg-white/70 px-2 py-1 ${
+          className={`flex items-center justify-end mr-4 rounded-lg text-sm md:text-base bg-blue-600 px-2 py-1 ${
             pathname === "/login" || pathname === "/info" ? "font-bold" : ""
           } hover:font-bold`}
           onClick={() => {

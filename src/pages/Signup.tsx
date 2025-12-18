@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState("");
-  const navigate = useNavigate();
+  const [showAlertText, setShowAlertText] = useState(false);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +27,7 @@ const Signup = () => {
       if (res.status === 200) {
         alert("회원가입이 완료되었습니다!");
         navigate("/login");
-      } else if (res.status === 400 || res.status === 401 || res.status === 402 || res.status === 403) {
+      } else if (res.status === 400 || res.status === 401 || res.status === 402 || res.status === 403 || res.status === 404) {
         alert(data.message || "회원가입 실패");
       } else {
         alert(data.message || "회원가입 실패");
@@ -77,8 +78,17 @@ const Signup = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <input type="text" placeholder="닉네임" className="mb-4 p-2 border rounded w-[250px]" value={nickname} onChange={(e) => setNickname(e.target.value)} />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded w-[250px]">
+        <input
+          type="text"
+          placeholder="닉네임"
+          className="mb-4 p-2 border rounded w-[250px]"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+          onFocus={() => setShowAlertText(true)}
+          onBlur={() => setShowAlertText(false)}
+        />
+        <div className={`text-sm mb-10 cursor-default ${showAlertText ? "text-white" : "text-black"}`}>부적절한 닉네임은 이용에 제약을 받을 수 있습니다.</div>
+        <button type="submit" className="bg-blue-600 text-white p-2 rounded w-[250px]">
           회원가입
         </button>
       </form>

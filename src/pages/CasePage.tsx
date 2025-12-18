@@ -5,6 +5,7 @@ import { FaThumbsUp, FaThumbsDown } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaMedal } from "react-icons/fa";
 import { MdGavel } from "react-icons/md";
+import MasterForm from "../components/MasterForm";
 
 interface ICaseItem {
   _id: string;
@@ -47,6 +48,8 @@ const CasePage = () => {
   const caseNumber = caseData?.caseNumber;
   const [latestCaseNumber, setLatestCaseNumber] = useState<number>(0);
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
+  const [masterKey, setMasterKey] = useState(false);
+  const [commentForMaster, setCommentForMaster] = useState<IComment | null>(null);
 
   const fetchCase = async () => {
     const res = await fetch(`${apiUrl}/api/case/${caseId}`, {
@@ -56,6 +59,14 @@ const CasePage = () => {
     setCaseData(data);
   };
   const makeComment = async () => {
+    //도배 방지 localStorage
+    const lastCommentTime = localStorage.getItem("lastCommentTime");
+    const now = Date.now();
+    if (lastCommentTime && now - parseInt(lastCommentTime) < 30000) {
+      alert("댓글은 30초에 한 번만 작성할 수 있습니다.");
+      return;
+    }
+
     if (comment.trim() === "" || isCommenting) return;
     setIsCommenting(true);
     const res = await fetch(`${apiUrl}/api/comment/${userId}/${caseId}`, {
@@ -66,6 +77,7 @@ const CasePage = () => {
     if (res.ok) {
       setComment("");
       alert("댓글이 등록되었습니다.");
+      localStorage.setItem("lastCommentTime", now.toString());
       fetchComment();
     } else {
       alert("댓글 전송 실패");
@@ -234,6 +246,23 @@ const CasePage = () => {
     }
     window.location.reload();
   };
+  const openMasterKey = async () => {
+    try {
+      const res = await fetch(`${apiUrl}/api/check-admin`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}`,
+        },
+      });
+      const data = await res.json();
+      if (data.isAdmin) {
+        setMasterKey(!masterKey);
+      }
+    } catch (error) {
+      console.error("Error checking admin status:", error);
+    }
+  };
 
   useEffect(() => {
     if (!caseId) return;
@@ -315,15 +344,16 @@ const CasePage = () => {
             다음 사건
           </button>
         </div>
-        <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-6 text-xl">{caseData?.caseTitle}</div>
+        <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-6 text-xl cursor-default">{caseData?.caseTitle}</div>
         <div className="webtoonPart w-full"></div>
-        <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px] px-1">{caseData?.caseText}</div>
+        <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px] px-1 cursor-default">{caseData?.caseText}</div>
         <div className="commentPart w-full mt-6">
-          <div className="commentUpPart h-8 text-lg my-2">댓글({commentCount})</div>
+          <div className="commentUpPart h-8 text-lg my-2 cursor-default">댓글({commentCount})</div>
           <div className="commentMiddlePart flex flex-col items-center p-2 border">
-            <div className="idPart w-full mb-1">{userNickname}</div>
+            <div className="idPart w-full mb-1 cursor-default">{userNickname}</div>
             <textarea
               className="textPart w-full h-24 mx-auto"
+              spellCheck={false}
               placeholder={`${userId ? "댓글을 입력하세요" : "로그인이 필요합니다."}`}
               maxLength={300}
               value={comment}
@@ -343,21 +373,32 @@ const CasePage = () => {
           </div>
           <div className="commentDownPart">
             {comments.map((comment, index) => (
-              <div key={index} className="commentItem flex flex-col border-b px-2 py-4">
-                <div className="commentUser text-sm md:text-base flex gap-1">
-                  <span className="flex justify-center items-center">
-                    {index === 0 ? (
-                      <FaMedal color="#FFD700" size={12} />
-                    ) : index === 1 ? (
-                      <FaMedal color="#C0C0C0" size={12} />
-                    ) : index === 2 ? (
-                      <FaMedal color="#CD7F32" size={12} />
-                    ) : null}
-                  </span>
-                  <span>{comment.userNickname}</span>
-                  <span className="text-xs md:text-sm flex items-center text-gray-500">{formattedDate(comment.createdAt)}</span>
-                </div>
-                <div className="commentText text-sm md:text-base">{comment.comment}</div>
+              <div
+                key={index}
+                className="commentItem flex flex-col border-b px-2 py-4"
+                onClick={async () => {
+                  setCommentForMaster(comment);
+                  openMasterKey();
+                }}
+              >
+                {masterKey ? (
+                  <MasterForm setMasterKey={setMasterKey} comment={commentForMaster} setCommentForMaster={setCommentForMaster} />
+                ) : (
+                  <div className="commentUser text-sm md:text-base flex gap-1">
+                    <span className="flex justify-center items-center">
+                      {index === 0 ? (
+                        <FaMedal color="#FFD700" size={12} />
+                      ) : index === 1 ? (
+                        <FaMedal color="#C0C0C0" size={12} />
+                      ) : index === 2 ? (
+                        <FaMedal color="#CD7F32" size={12} />
+                      ) : null}
+                    </span>
+                    <span className="cursor-default">{comment.userNickname}</span>
+                    <span className="text-xs md:text-sm flex items-center text-gray-500 cursor-default">{formattedDate(comment.createdAt)}</span>
+                  </div>
+                )}
+                <div className="commentText text-sm md:text-base cursor-default pb-3">{comment.comment}</div>
                 <div className="flex justify-end gap-2">
                   <button
                     className={`border p-1 flex justify-center items-center ${
@@ -398,16 +439,24 @@ const CasePage = () => {
         </div>
         <div className="footerPart w-full pb-2 flex flex-col border mt-2">
           <div className="w-full min-h-8 md:min-h-10 flex justify-center">
-            <button disabled={isSentenced} className={`flex-1 min-h-full ${mode === 0 ? "bg-blue-600" : ""}`} onClick={() => setMode(0)}>
+            <button
+              disabled={isSentenced}
+              className={`flex-1 min-h-full ${mode === 0 ? (isSentenced ? "bg-gray-500" : "bg-blue-600") : ""}`}
+              onClick={() => setMode(0)}
+            >
               징역형
             </button>
-            <button disabled={isSentenced} className={`flex-1 min-h-full ${mode === 1 ? "bg-blue-600" : ""}`} onClick={() => setMode(1)}>
+            <button
+              disabled={isSentenced}
+              className={`flex-1 min-h-full ${mode === 1 ? (isSentenced ? "bg-gray-500" : "bg-blue-600") : ""}`}
+              onClick={() => setMode(1)}
+            >
               벌금형
             </button>
           </div>
           {mode === 0 ? (
             <div className="flex flex-col">
-              <div className="w-full h-20 md:h-30 flex justify-center items-center text-2xl font-bold">
+              <div className="w-full h-20 md:h-30 flex justify-center items-center text-2xl font-bold cursor-default">
                 {year === 50 && month === 11 ? "무기징역" : year > 0 ? year + "년" + " " + month + "개월" : month + "개월"}
               </div>
               <div className="w-[90%] h-12 md:h-25 flex flex-col mx-auto gap-3 md:gap-5">
@@ -417,7 +466,7 @@ const CasePage = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center">
-              <div className="w-full h-20 md:h-30 flex justify-center items-center text-2xl font-bold">{(fine ?? 0).toLocaleString()}원</div>
+              <div className="w-full h-20 md:h-30 flex justify-center items-center text-2xl font-bold cursor-default">{(fine ?? 0).toLocaleString()}원</div>
               <div className="w-[98%] md:h-12 flex justify-center items-center gap-2 mb-1">
                 <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10" onClick={() => setFine((prev) => prev + 100000000)}>
                   +1억
@@ -481,7 +530,7 @@ const CasePage = () => {
           </button>
         </div>
         <div className="blankSpace h-2"></div>
-        {!isSentenced && <div className="w-full h-10 flex justify-center">선고 후에 실제 판결을 확인할 수 있습니다</div>}
+        {!isSentenced && <div className="w-full h-10 flex justify-center cursor-default">선고 후에 실제 판결을 확인할 수 있습니다</div>}
         <div className="w-full h-10 flex justify-between">
           <button className={`hover:font-bold text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : ""}`} onClick={async () => pastCase()}>
             이전 사건
