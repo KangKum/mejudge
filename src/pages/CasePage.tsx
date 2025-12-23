@@ -319,6 +319,7 @@ const CasePage = () => {
         <div className="webtoonPart w-full">
           <img src={`${IMG_BASEURL}/cases/${caseData?.caseNumber}/case${caseData?.caseNumber}_1.webp`} />
         </div>
+        <div className="blankSpace h-4"></div>
         <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px]">{caseData?.caseText}</div>
         <div className="commentPart w-full mt-6">
           <div className="commentUpPart h-8 text-lg my-2">댓글({commentCount})</div>

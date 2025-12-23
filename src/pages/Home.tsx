@@ -24,6 +24,8 @@ const Home = () => {
         </span>
         <div className="blankSpace h-[100px]"></div>
         <span className="homeSub2 text-xs md:text-sm">※본 플랫폼은 국가 기관과 무관한 독립적인 서비스입니다.</span>
+        <div className="blankSpace h-3"></div>
+        <span className="homeSub2 text-xs md:text-sm">※15세 이상 권장 콘텐츠</span>
         <div className="blankSpace h-[100px]"></div>
         <button
           className="homeButton md:rounded-xl rounded-lg bg-[#e5e0e0] p-2 md:p-4 text-base md:text-2xl text-black hover:cursor-pointer"
