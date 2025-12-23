@@ -1,10 +1,15 @@
+import { useEffect } from "react";
 import CaseList from "../components/CaseList";
 
 const Main = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const isLoggedIn = !!localStorage.getItem("MJKRtoken");
 
   return (
-    <div className="w-full flex flex-col justify-center items-center">
+    <div className="w-full flex flex-col justify-center items-center cursor-default">
       <div className="blankSpace h-16 md:h-28"></div>
       {isLoggedIn ? (
         <div className="caseContainerForLoggedIn flex flex-col md:flex-row gap-10 justify-center">
