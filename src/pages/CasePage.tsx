@@ -47,6 +47,7 @@ const CasePage = () => {
   const caseNumber = caseData?.caseNumber;
   const [latestCaseNumber, setLatestCaseNumber] = useState<number>(0);
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
+  const IMG_BASEURL = "https://img.mejudge.com";
 
   const fetchCase = async () => {
     const res = await fetch(`${apiUrl}/api/case/${caseId}`, {
@@ -315,7 +316,9 @@ const CasePage = () => {
           </button>
         </div>
         <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-6 text-xl">{caseData?.caseTitle}</div>
-        <div className="webtoonPart w-full"></div>
+        <div className="webtoonPart w-full">
+          <img src={`${IMG_BASEURL}/cases/${caseNumber}/case${caseNumber}_1.webp`} />
+        </div>
         <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px]">{caseData?.caseText}</div>
         <div className="commentPart w-full mt-6">
           <div className="commentUpPart h-8 text-lg my-2">댓글({commentCount})</div>
