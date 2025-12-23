@@ -284,7 +284,7 @@ const CasePage = () => {
   useEffect(() => {
     fetchComment();
     console.log(IMG_BASEURL);
-    console.log(caseNumber);
+    console.log(caseData);
   }, [caseId, commentLimit]);
 
   //마지막 케이스 넘버 가져오기
