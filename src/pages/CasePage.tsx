@@ -284,7 +284,6 @@ const CasePage = () => {
   useEffect(() => {
     fetchComment();
     console.log(IMG_BASEURL);
-    console.log(caseData);
   }, [caseId, commentLimit]);
 
   //마지막 케이스 넘버 가져오기
@@ -319,6 +318,7 @@ const CasePage = () => {
         </div>
         <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-6 text-xl">{caseData?.caseTitle}</div>
         <div className="webtoonPart w-full">
+          <span>{caseData?.caseNumber}</span>
           <img src={`${IMG_BASEURL}/cases/${caseNumber}/case${caseNumber}_1.webp`} />
         </div>
         <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px]">{caseData?.caseText}</div>
