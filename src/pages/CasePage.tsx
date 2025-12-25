@@ -30,6 +30,7 @@ const CasePage = () => {
   const [isSentenced, setIsSentenced] = useState(false);
   const [year, setYear] = useState(0);
   const [month, setMonth] = useState(0);
+  const [suspend, setSuspend] = useState(0);
   const [mode, setMode] = useState(0); // 0: 징역형, 1: 벌금형
   const [fine, setFine] = useState(0);
   const Ymax = 50;
@@ -222,7 +223,7 @@ const CasePage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}`,
         },
-        body: JSON.stringify({ mode, year, month, fine }),
+        body: JSON.stringify({ mode, year, month, suspend, fine }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -257,6 +258,7 @@ const CasePage = () => {
             setMode(data.judgement.mode);
             setYear(data.judgement.year);
             setMonth(data.judgement.month);
+            setSuspend(data.judgement.suspend);
             setFine(typeof data.judgement.fine === "number" ? data.judgement.fine : 0);
           } else {
             // 선고 기록이 없으면 기본값으로 초기화
@@ -264,6 +266,7 @@ const CasePage = () => {
             setMode(0);
             setYear(0);
             setMonth(0);
+            setSuspend(0);
             setFine(0);
           }
         } else {
@@ -315,7 +318,7 @@ const CasePage = () => {
             다음 사건
           </button>
         </div>
-        <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-6 text-xl">{caseData?.caseTitle}</div>
+        <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl">{caseData?.caseTitle}</div>
         <div className="webtoonPart w-full">
           <img src={`${IMG_BASEURL}/cases/${caseData?.caseNumber}/case${caseData?.caseNumber}_1.webp`} />
         </div>
@@ -349,11 +352,11 @@ const CasePage = () => {
               <div key={index} className="commentItem flex flex-col border-b px-2 py-4">
                 <div className="commentUser text-sm md:text-base flex gap-1">
                   <span className="flex justify-center items-center">
-                    {index === 0 ? (
+                    {index === 0 && comment.likes.length > 2 ? (
                       <FaMedal color="#FFD700" size={12} />
-                    ) : index === 1 ? (
+                    ) : index === 1 && comment.likes.length > 2 ? (
                       <FaMedal color="#C0C0C0" size={12} />
-                    ) : index === 2 ? (
+                    ) : index === 2 && comment.likes.length > 2 ? (
                       <FaMedal color="#CD7F32" size={12} />
                     ) : null}
                   </span>
@@ -387,7 +390,10 @@ const CasePage = () => {
                 </div>
               </div>
             ))}
-            <button className="my-2 p-2 flex justify-center items-center gap-2 w-[60%] mx-auto" onClick={() => setCommentLimit((prev) => prev + 10)}>
+            <button
+              className={`my-2 p-2 flex justify-center items-center gap-2 w-[60%] mx-auto ${commentCount <= commentLimit ? "hidden" : ""}`}
+              onClick={() => setCommentLimit((prev) => prev + 10)}
+            >
               <span>더보기</span>{" "}
               <span>
                 <IoIosArrowDown size={18} />
@@ -407,16 +413,88 @@ const CasePage = () => {
           {mode === 0 ? (
             <div className="flex flex-col">
               <div className="w-full h-20 md:h-30 flex justify-center items-center text-2xl font-bold">
-                {year === 50 && month === 11 ? "무기징역" : year > 0 ? year + "년" + " " + month + "개월" : month + "개월"}
+                {year === 50 && month === 11 ? "무기징역" : year > 0 ? "징역" + " " + year + "년" + " " + month + "개월" : "징역" + " " + month + "개월"}
               </div>
               <div className="w-[90%] h-12 md:h-25 flex flex-col mx-auto gap-3 md:gap-5">
                 <input type="range" disabled={isSentenced} min={Ymin} max={Ymax} value={year} onChange={(e) => setYear(Number(e.target.value))} />
                 <input type="range" disabled={isSentenced} min={Mmin} max={Mmax} value={month} onChange={(e) => setMonth(Number(e.target.value))} />
               </div>
+              <div className={`h-10 mt-4 w-[90%] mx-auto flex flex-row ${(year >= 3 && month !== 0) || year >= 4 ? "text-gray-500" : ""}`}>
+                <div className="w-[30%] h-full text-xl flex justify-center items-center">집행유예</div>
+                <div className="w-[70%] h-full flex justify-center items-center">
+                  <div className="w-full h-[95%] flex mx-auto gap-2">
+                    <button
+                      disabled={isSentenced || (year >= 3 && month !== 0) || year >= 4}
+                      className={`border rounded p-1 w-[20%] ${isSentenced && suspend === 1 ? "bg-gray-300" : suspend === 1 ? "bg-blue-600" : ""}`}
+                      onClick={() => {
+                        if (suspend === 1) {
+                          setSuspend(0);
+                        } else {
+                          setSuspend(1);
+                        }
+                      }}
+                    >
+                      1년
+                    </button>
+                    <button
+                      disabled={isSentenced || (year >= 3 && month !== 0) || year >= 4}
+                      className={`border rounded p-1 w-[20%] ${isSentenced && suspend === 2 ? "bg-gray-300" : suspend === 2 ? "bg-blue-600" : ""}`}
+                      onClick={() => {
+                        if (suspend === 2) {
+                          setSuspend(0);
+                        } else {
+                          setSuspend(2);
+                        }
+                      }}
+                    >
+                      2년
+                    </button>
+                    <button
+                      disabled={isSentenced || (year >= 3 && month !== 0) || year >= 4}
+                      className={`border rounded p-1 w-[20%] ${isSentenced && suspend === 3 ? "bg-gray-300" : suspend === 3 ? "bg-blue-600" : ""}`}
+                      onClick={() => {
+                        if (suspend === 3) {
+                          setSuspend(0);
+                        } else {
+                          setSuspend(3);
+                        }
+                      }}
+                    >
+                      3년
+                    </button>
+                    <button
+                      disabled={isSentenced || (year >= 3 && month !== 0) || year >= 4}
+                      className={`border rounded p-1 w-[20%] ${isSentenced && suspend === 4 ? "bg-gray-300" : suspend === 4 ? "bg-blue-600" : ""}`}
+                      onClick={() => {
+                        if (suspend === 4) {
+                          setSuspend(0);
+                        } else {
+                          setSuspend(4);
+                        }
+                      }}
+                    >
+                      4년
+                    </button>
+                    <button
+                      disabled={isSentenced || (year >= 3 && month !== 0) || year >= 4}
+                      className={`border rounded p-1 w-[20%] ${isSentenced && suspend === 5 ? "bg-gray-300" : suspend === 5 ? "bg-blue-600" : ""}`}
+                      onClick={() => {
+                        if (suspend === 5) {
+                          setSuspend(0);
+                        } else {
+                          setSuspend(5);
+                        }
+                      }}
+                    >
+                      5년
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="flex flex-col items-center">
-              <div className="w-full h-20 md:h-30 flex justify-center items-center text-2xl font-bold">{(fine ?? 0).toLocaleString()}원</div>
+              <div className="w-full h-20 md:h-30 flex justify-center items-center text-2xl font-bold">벌금 {(fine ?? 0).toLocaleString()}원</div>
               <div className="w-[98%] md:h-12 flex justify-center items-center gap-2 mb-1">
                 <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10" onClick={() => setFine((prev) => prev + 100000000)}>
                   +1억
@@ -429,9 +507,6 @@ const CasePage = () => {
                 </button>
                 <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10" onClick={() => setFine((prev) => prev + 100000)}>
                   +10만원
-                </button>
-                <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10" onClick={() => setFine((prev) => prev + 10000)}>
-                  +1만원
                 </button>
               </div>
               <div className="w-[98%] md:h-12 flex justify-center items-center gap-2">
@@ -462,13 +537,6 @@ const CasePage = () => {
                   onClick={() => setFine((prev) => (prev - 100000 < 0 ? 0 : prev - 100000))}
                 >
                   -10만원
-                </button>
-                <button
-                  disabled={isSentenced}
-                  className="border flex-1 text-xs md:text-base h-10"
-                  onClick={() => setFine((prev) => (prev - 10000 < 0 ? 0 : prev - 10000))}
-                >
-                  -1만원
                 </button>
               </div>
             </div>
