@@ -69,6 +69,7 @@ const CasePage = () => {
       setComment("");
       alert("댓글이 등록되었습니다.");
       fetchComment();
+      fetchAllComments();
     } else {
       alert("댓글 전송 실패");
     }
@@ -309,21 +310,21 @@ const CasePage = () => {
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
-      <div className="w-[90%] md:w-[60%] flex flex-col">
+      <div className="w-[90%] md:w-[55%] flex flex-col">
         <div className="w-full h-10 flex justify-between">
-          <button className={`hover:font-bold text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : ""}`} onClick={async () => pastCase()}>
+          <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "hover:font-bold"}`} onClick={async () => pastCase()}>
             이전 사건
           </button>
-          <button className={`hover:font-bold text-sm md:text-base ${caseNumber === latestCaseNumber ? "text-gray-500" : ""}`} onClick={async () => nextCase()}>
+          <button className={`text-sm md:text-base ${caseNumber === latestCaseNumber ? "text-gray-500" : "hover:font-bold"}`} onClick={async () => nextCase()}>
             다음 사건
           </button>
         </div>
-        <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl">{caseData?.caseTitle}</div>
+        <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl cursor-default">{caseData?.caseTitle}</div>
         <div className="webtoonPart w-full">
           <img src={`${IMG_BASEURL}/cases/${caseData?.caseNumber}/case${caseData?.caseNumber}_1.webp`} />
         </div>
         <div className="blankSpace h-4"></div>
-        <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px]">{caseData?.caseText}</div>
+        <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px] text-lg">{caseData?.caseText}</div>
         <div className="commentPart w-full mt-6">
           <div className="commentUpPart h-8 text-lg my-2">댓글({commentCount})</div>
           <div className="commentMiddlePart flex flex-col items-center p-2 border">
@@ -350,7 +351,7 @@ const CasePage = () => {
           <div className="commentDownPart">
             {comments.map((comment, index) => (
               <div key={index} className="commentItem flex flex-col border-b px-2 py-4">
-                <div className="commentUser text-sm md:text-base flex gap-1">
+                <div className="commentUser text-sm md:text-base flex">
                   <span className="flex justify-center items-center">
                     {index === 0 && comment.likes.length > 2 ? (
                       <FaMedal color="#FFD700" size={12} />
@@ -360,7 +361,7 @@ const CasePage = () => {
                       <FaMedal color="#CD7F32" size={12} />
                     ) : null}
                   </span>
-                  <span>{comment.userNickname}</span>
+                  <span className="mr-3">{comment.userNickname}</span>
                   <span className="text-xs md:text-sm flex items-center text-gray-500">{formattedDate(comment.createdAt)}</span>
                 </div>
                 <div className="commentText text-sm md:text-base">{comment.comment}</div>
@@ -390,42 +391,40 @@ const CasePage = () => {
                 </div>
               </div>
             ))}
-            <button
-              className={`my-2 p-2 flex justify-center items-center gap-2 w-[60%] mx-auto ${commentCount <= commentLimit ? "hidden" : ""}`}
-              onClick={() => setCommentLimit((prev) => prev + 10)}
-            >
-              <span>더보기</span>{" "}
-              <span>
+            <button className={`my-2 p-2 flex justify-center items-center gap-2 w-[60%] mx-auto mb-10`} onClick={() => setCommentLimit((prev) => prev + 10)}>
+              <span className={`${commentCount <= commentLimit ? "hidden" : ""}`}>
                 <IoIosArrowDown size={18} />
               </span>
             </button>
           </div>
         </div>
-        <div className="footerPart w-full pb-2 flex flex-col border mt-2">
-          <div className="w-full min-h-8 md:min-h-10 flex justify-center">
-            <button disabled={isSentenced} className={`flex-1 min-h-full ${mode === 0 ? "bg-blue-600" : ""}`} onClick={() => setMode(0)}>
+        <div className="footerPart w-[90%] pb-2 flex flex-col mx-auto mt-2">
+          <div className="w-[80%] mx-auto min-h-8 md:min-h-10 flex justify-center">
+            <button disabled={isSentenced} className={`flex-1 min-h-full rounded-l ${mode === 0 ? "bg-blue-600" : "bg-gray-400"}`} onClick={() => setMode(0)}>
               징역형
             </button>
-            <button disabled={isSentenced} className={`flex-1 min-h-full ${mode === 1 ? "bg-blue-600" : ""}`} onClick={() => setMode(1)}>
+            <button disabled={isSentenced} className={`flex-1 min-h-full rounded-r ${mode === 1 ? "bg-blue-600" : "bg-gray-400"}`} onClick={() => setMode(1)}>
               벌금형
             </button>
           </div>
           {mode === 0 ? (
-            <div className="flex flex-col">
-              <div className="w-full h-20 md:h-30 flex justify-center items-center text-2xl font-bold">
+            <div className="flex flex-col h-40 md:h-50">
+              <div className="w-full h-20 md:h-30 flex justify-center items-center text-xl md:text-2xl font-bold">
                 {year === 50 && month === 11 ? "무기징역" : year > 0 ? "징역" + " " + year + "년" + " " + month + "개월" : "징역" + " " + month + "개월"}
               </div>
-              <div className="w-[90%] h-12 md:h-25 flex flex-col mx-auto gap-3 md:gap-5">
+              <div className="w-[95%] h-12 md:h-25 flex flex-col mx-auto gap-3 md:gap-5">
                 <input type="range" disabled={isSentenced} min={Ymin} max={Ymax} value={year} onChange={(e) => setYear(Number(e.target.value))} />
                 <input type="range" disabled={isSentenced} min={Mmin} max={Mmax} value={month} onChange={(e) => setMonth(Number(e.target.value))} />
               </div>
-              <div className={`h-10 mt-4 w-[90%] mx-auto flex flex-row ${(year >= 3 && month !== 0) || year >= 4 ? "text-gray-500" : ""}`}>
-                <div className="w-[30%] h-full text-xl flex justify-center items-center">집행유예</div>
-                <div className="w-[70%] h-full flex justify-center items-center">
+              <div className={`h-12 mt-4 w-[95%] mx-auto flex flex-row my-auto ${(year >= 3 && month !== 0) || year >= 4 ? "text-gray-500" : ""}`}>
+                <div className="w-[25%] h-full flex justify-center items-center text-base md:text-lg">집행유예</div>
+                <div className="w-[75%] h-full flex justify-center items-center text-sm md:text-base">
                   <div className="w-full h-[95%] flex mx-auto gap-2">
                     <button
                       disabled={isSentenced || (year >= 3 && month !== 0) || year >= 4}
-                      className={`border rounded p-1 w-[20%] ${isSentenced && suspend === 1 ? "bg-gray-300" : suspend === 1 ? "bg-blue-600" : ""}`}
+                      className={`border rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center ${
+                        isSentenced && suspend === 1 ? "bg-gray-300" : suspend === 1 ? "bg-blue-600" : ""
+                      }`}
                       onClick={() => {
                         if (suspend === 1) {
                           setSuspend(0);
@@ -438,7 +437,9 @@ const CasePage = () => {
                     </button>
                     <button
                       disabled={isSentenced || (year >= 3 && month !== 0) || year >= 4}
-                      className={`border rounded p-1 w-[20%] ${isSentenced && suspend === 2 ? "bg-gray-300" : suspend === 2 ? "bg-blue-600" : ""}`}
+                      className={`border rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center ${
+                        isSentenced && suspend === 2 ? "bg-gray-300" : suspend === 2 ? "bg-blue-600" : ""
+                      }`}
                       onClick={() => {
                         if (suspend === 2) {
                           setSuspend(0);
@@ -451,7 +452,9 @@ const CasePage = () => {
                     </button>
                     <button
                       disabled={isSentenced || (year >= 3 && month !== 0) || year >= 4}
-                      className={`border rounded p-1 w-[20%] ${isSentenced && suspend === 3 ? "bg-gray-300" : suspend === 3 ? "bg-blue-600" : ""}`}
+                      className={`border rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center ${
+                        isSentenced && suspend === 3 ? "bg-gray-300" : suspend === 3 ? "bg-blue-600" : ""
+                      }`}
                       onClick={() => {
                         if (suspend === 3) {
                           setSuspend(0);
@@ -464,7 +467,9 @@ const CasePage = () => {
                     </button>
                     <button
                       disabled={isSentenced || (year >= 3 && month !== 0) || year >= 4}
-                      className={`border rounded p-1 w-[20%] ${isSentenced && suspend === 4 ? "bg-gray-300" : suspend === 4 ? "bg-blue-600" : ""}`}
+                      className={`border rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center ${
+                        isSentenced && suspend === 4 ? "bg-gray-300" : suspend === 4 ? "bg-blue-600" : ""
+                      }`}
                       onClick={() => {
                         if (suspend === 4) {
                           setSuspend(0);
@@ -477,7 +482,9 @@ const CasePage = () => {
                     </button>
                     <button
                       disabled={isSentenced || (year >= 3 && month !== 0) || year >= 4}
-                      className={`border rounded p-1 w-[20%] ${isSentenced && suspend === 5 ? "bg-gray-300" : suspend === 5 ? "bg-blue-600" : ""}`}
+                      className={`border rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center ${
+                        isSentenced && suspend === 5 ? "bg-gray-300" : suspend === 5 ? "bg-blue-600" : ""
+                      }`}
                       onClick={() => {
                         if (suspend === 5) {
                           setSuspend(0);
@@ -493,47 +500,47 @@ const CasePage = () => {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center">
-              <div className="w-full h-20 md:h-30 flex justify-center items-center text-2xl font-bold">벌금 {(fine ?? 0).toLocaleString()}원</div>
+            <div className="flex flex-col items-center h-40 md:h-50">
+              <div className="w-full h-20 md:h-30 flex justify-center items-center text-xl md:text-2xl font-bold">벌금 {(fine ?? 0).toLocaleString()}원</div>
               <div className="w-[98%] md:h-12 flex justify-center items-center gap-2 mb-1">
-                <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10" onClick={() => setFine((prev) => prev + 100000000)}>
+                <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10 rounded" onClick={() => setFine((prev) => prev + 100000000)}>
                   +1억
                 </button>
-                <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10" onClick={() => setFine((prev) => prev + 10000000)}>
+                <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10 rounded" onClick={() => setFine((prev) => prev + 10000000)}>
                   +1000만원
                 </button>
-                <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10" onClick={() => setFine((prev) => prev + 1000000)}>
+                <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10 rounded" onClick={() => setFine((prev) => prev + 1000000)}>
                   +100만원
                 </button>
-                <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10" onClick={() => setFine((prev) => prev + 100000)}>
+                <button disabled={isSentenced} className="border flex-1 text-xs md:text-base h-10 rounded" onClick={() => setFine((prev) => prev + 100000)}>
                   +10만원
                 </button>
               </div>
               <div className="w-[98%] md:h-12 flex justify-center items-center gap-2">
                 <button
                   disabled={isSentenced}
-                  className="border flex-1 text-xs md:text-base h-10"
+                  className="border flex-1 text-xs md:text-base h-10 rounded"
                   onClick={() => setFine((prev) => (prev - 100000000 < 0 ? 0 : prev - 100000000))}
                 >
                   -1억
                 </button>
                 <button
                   disabled={isSentenced}
-                  className="border flex-1 text-xs md:text-base h-10"
+                  className="border flex-1 text-xs md:text-base h-10 rounded"
                   onClick={() => setFine((prev) => (prev - 10000000 < 0 ? 0 : prev - 10000000))}
                 >
                   -1000만원
                 </button>
                 <button
                   disabled={isSentenced}
-                  className="border flex-1 text-xs md:text-base h-10"
+                  className="border flex-1 text-xs md:text-base h-10 rounded"
                   onClick={() => setFine((prev) => (prev - 1000000 < 0 ? 0 : prev - 1000000))}
                 >
                   -100만원
                 </button>
                 <button
                   disabled={isSentenced}
-                  className="border flex-1 text-xs md:text-base h-10"
+                  className="border flex-1 text-xs md:text-base h-10 rounded"
                   onClick={() => setFine((prev) => (prev - 100000 < 0 ? 0 : prev - 100000))}
                 >
                   -10만원
