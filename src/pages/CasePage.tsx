@@ -24,6 +24,7 @@ interface IComment {
 
 const CasePage = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
+  const imgUrl = import.meta.env.VITE_IMG_BASEURL;
   const navigate = useNavigate();
   const { caseId } = useParams(); // id가 바로 caseItem._id 값
   const [caseData, setCaseData] = useState<ICaseItem | null>(null);
@@ -48,7 +49,6 @@ const CasePage = () => {
   const caseNumber = caseData?.caseNumber;
   const [latestCaseNumber, setLatestCaseNumber] = useState<number>(0);
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
-  const IMG_BASEURL = "https://img.mejudge.com";
 
   const fetchCase = async () => {
     const res = await fetch(`${apiUrl}/api/case/${caseId}`, {
@@ -321,7 +321,7 @@ const CasePage = () => {
         </div>
         <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl cursor-default">{caseData?.caseTitle}</div>
         <div className="webtoonPart w-full">
-          <img src={`${IMG_BASEURL}/cases/${caseData?.caseNumber}/case${caseData?.caseNumber}_1.webp`} />
+          <img src={`${imgUrl}/cases/${caseData?.caseNumber}/case${caseData?.caseNumber}_1.webp`} />
         </div>
         <div className="blankSpace h-4"></div>
         <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px] text-lg">{caseData?.caseText}</div>
