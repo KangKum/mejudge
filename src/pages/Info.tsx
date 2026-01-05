@@ -194,31 +194,31 @@ const Info = () => {
   }, [userId]);
   return (
     <div className="flex flex-col items-center cursor-default">
-      <div className="blankSpace w-full h-30 md:h-45"></div>
+      <div className="blankSpace w-full h-20 md:h-45"></div>
       <div className="flex flex-col items-center w-[45%] md:w-[35%]">
         <div className="w-full md:h-30 flex flex-col md:flex-row md:justify-between gap-3">
-          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500">
+          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 rounded-lg">
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
               <MdGavel size={30} />
             </div>
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{judgeCases}건</div>
           </div>
 
-          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500">
+          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 rounded-lg">
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
               <FaCommentAlt size={28} />
             </div>
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{commentCount}개</div>
           </div>
 
-          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500">
+          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 rounded-lg">
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
               <FaThumbsUp size={28} />
             </div>
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{totalLikes}개</div>
           </div>
 
-          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500">
+          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 rounded-lg">
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
               <FaThumbsDown size={28} />
             </div>
@@ -226,7 +226,7 @@ const Info = () => {
           </div>
 
           {isAdmin && (
-            <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 cursor-pointer">
+            <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 rounded-lg cursor-pointer">
               <div className="md:w-full w-full h-full flex justify-center items-center hover:font-bold" onClick={() => navigate("/master20251208")}>
                 사건등록
               </div>
@@ -234,9 +234,9 @@ const Info = () => {
           )}
         </div>
       </div>
-      <div className="blankSpace w-full h-20 md:h-40"></div>
+      <div className="blankSpace w-full h-15 md:h-40"></div>
       <button
-        className="bg-gray-500 p-2"
+        className="bg-gray-500 p-2 rounded"
         onClick={() => {
           localStorage.removeItem("MJKRtoken");
           localStorage.removeItem("MJKRnickname");
