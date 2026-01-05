@@ -19,6 +19,7 @@ const Info = () => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   const changePW = async () => {
     if (!validate()) return;
@@ -184,6 +185,13 @@ const Info = () => {
     fetchTotalDislike();
   }, [userId]);
 
+  useEffect(() => {
+    //현재 로그인한 유저가 관리자인지 확인
+    const adminId = import.meta.env.VITE_ADMIN_ID;
+    if (userId === adminId) {
+      setIsAdmin(true);
+    }
+  }, [userId]);
   return (
     <div className="flex flex-col items-center cursor-default">
       <div className="blankSpace w-full h-30 md:h-45"></div>
@@ -216,6 +224,14 @@ const Info = () => {
             </div>
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{totalDislikes}개</div>
           </div>
+
+          {isAdmin && (
+            <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 cursor-pointer">
+              <div className="md:w-full w-full h-full flex justify-center items-center hover:font-bold" onClick={() => navigate("/master20251208")}>
+                사건등록
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="blankSpace w-full h-20 md:h-40"></div>
