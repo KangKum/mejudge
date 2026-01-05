@@ -308,6 +308,8 @@ const CasePage = () => {
     fetchLatestCaseNumber();
   }, [caseData]);
 
+  console.log("IMG BASE (from code):", import.meta.env.VITE_IMG_BASEURL);
+
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="w-[90%] md:w-[55%] flex flex-col">
