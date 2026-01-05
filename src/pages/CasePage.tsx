@@ -321,7 +321,7 @@ const CasePage = () => {
         </div>
         <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl cursor-default">{caseData?.caseTitle}</div>
         <div className="webtoonPart w-full">
-          <img src={`${imgUrl}/cases/${caseData?.caseNumber}/case${caseData?.caseNumber}_1.webp`} />
+          {caseData?.caseNumber && <img src={`${imgUrl}/cases/${caseData.caseNumber}/case${caseData.caseNumber}_1.webp`} alt="case image" />}
         </div>
         <div className="blankSpace h-4"></div>
         <div className="textPart w-full whitespace-pre-line min-h-[450px] md:min-h-[500px] text-lg">{caseData?.caseText}</div>
