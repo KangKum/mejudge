@@ -49,6 +49,7 @@ const CasePage = () => {
   const caseNumber = caseData?.caseNumber;
   const [latestCaseNumber, setLatestCaseNumber] = useState<number>(0);
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   const fetchCase = async () => {
     const res = await fetch(`${apiUrl}/api/case/${caseId}`, {
@@ -56,6 +57,22 @@ const CasePage = () => {
     });
     const data = await res.json();
     setCaseData(data);
+  };
+  const deleteCase = async () => {
+    try {
+      const res = await fetch(`${apiUrl}/api/deleteCase/${caseId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
+      });
+      if (res.status === 200) {
+        alert("사건이 삭제되었습니다.");
+        navigate("/main");
+      } else {
+        alert("사건 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Error deleting case:", error);
+    }
   };
   const makeComment = async () => {
     if (comment.trim() === "" || isCommenting) return;
@@ -99,6 +116,43 @@ const CasePage = () => {
       console.error("Error fetching comments:", error);
     }
   };
+  const deleteComment = async ({ comment }: { comment: IComment }) => {
+    try {
+      const res = await fetch(`${apiUrl}/api/deleteComment/${comment._id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
+      });
+      if (res.status === 200) {
+        alert("댓글이 삭제되었습니다.");
+        fetchComment();
+        // fetchAllComments();
+      } else {
+        alert("댓글 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+  const changeNickname = async ({ comment }: { comment: IComment }) => {
+    const res = await fetch(`${apiUrl}/api/change-nickname`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}`,
+      },
+      body: JSON.stringify({
+        nickname: comment?.userNickname,
+      }),
+    });
+    if (res.status === 200) {
+      alert("닉네임이 변경되었습니다.");
+    } else if (res.status === 404) {
+      alert("해당 닉네임의 유저를 찾을 수 없습니다.");
+    } else {
+      alert("닉네임 변경에 실패했습니다.");
+    }
+  };
+
   const formattedDate = (dateString: string) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -308,13 +362,31 @@ const CasePage = () => {
     fetchLatestCaseNumber();
   }, [caseData]);
 
+  useEffect(() => {
+    //현재 로그인한 유저가 관리자인지 확인
+    const adminId = import.meta.env.VITE_ADMIN_ID;
+    if (userId === adminId) {
+      setIsAdmin(true);
+    }
+  }, [userId]);
+
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="w-[90%] md:w-[55%] flex flex-col">
-        <div className="w-full h-10 flex justify-between">
+        <div className="w-full h-10 mb-2 flex justify-between items-center">
           <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "hover:font-bold"}`} onClick={async () => pastCase()}>
             이전 사건
           </button>
+          {isAdmin && (
+            <button
+              className="text-sm md:text-base font-bold text-red-600 flex justify-center items-center"
+              onClick={() => {
+                confirm("정말로 사건을 삭제하시겠습니까? 삭제된 사건은 복구할 수 없습니다.") && deleteCase();
+              }}
+            >
+              DELETE
+            </button>
+          )}
           <button className={`text-sm md:text-base ${caseNumber === latestCaseNumber ? "text-gray-500" : "hover:font-bold"}`} onClick={async () => nextCase()}>
             다음 사건
           </button>
@@ -331,6 +403,7 @@ const CasePage = () => {
             <div className="idPart w-full mb-1">{userNickname}</div>
             <textarea
               className="textPart w-full h-24 mx-auto"
+              spellCheck={false}
               placeholder={`${userId ? "댓글을 입력하세요" : "로그인이 필요합니다."}`}
               maxLength={300}
               value={comment}
@@ -363,6 +436,26 @@ const CasePage = () => {
                   </span>
                   <span className="mr-3">{comment.userNickname}</span>
                   <span className="text-xs md:text-sm flex items-center text-gray-500">{formattedDate(comment.createdAt)}</span>
+                  {isAdmin && (
+                    <div>
+                      <button
+                        className="ml-3 text-red-600 border"
+                        onClick={() => {
+                          confirm("해당 유저의 닉네임을 변경하시겠습니까?") && changeNickname({ comment });
+                        }}
+                      >
+                        닉변
+                      </button>
+                      <button
+                        className="ml-3 text-red-600 border"
+                        onClick={() => {
+                          confirm("정말로 댓글을 삭제하시겠습니까? 삭제된 댓글은 복구할 수 없습니다.") && deleteComment({ comment });
+                        }}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <div className="commentText text-sm md:text-base">{comment.comment}</div>
                 <div className="flex justify-end gap-2">

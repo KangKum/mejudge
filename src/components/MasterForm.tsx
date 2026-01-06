@@ -43,7 +43,7 @@ const MasterForm = ({
       }}
     >
       <div
-        className="flex flex-col justify-center items-center gap-2 bg-black w-[300px] h-[200px] border-4 rounded mx-auto mt-70"
+        className="flex flex-col justify-center items-center gap-2 bg-green-200 w-[300px] h-[200px] border-4 rounded mx-auto mt-70"
         onClick={(e) => e.stopPropagation()}
       >
         <button
