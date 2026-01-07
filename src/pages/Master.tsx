@@ -40,7 +40,7 @@ const Master = () => {
           사건등록
         </button>
 
-        <CaseList read={2} sort="전체" />
+        <CaseList />
       </div>
     </div>
   );
