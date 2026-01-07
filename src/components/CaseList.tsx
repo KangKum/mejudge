@@ -23,11 +23,11 @@ const CaseList = () => {
   const [caseCount, setCaseCount] = useState(0);
 
   const fetchCases = async () => {
-    let data = [];
     const res = await fetch(`${apiUrl}/api/cases?limit=${caseLimit}`, { method: "GET" });
-    data = await res.json();
-    if (res) {
-      setCaseCount(data.totalCases);
+    const data = await res.json();
+    console.log(data);
+    if (res.status === 200) {
+      setCaseCount(data.length);
       setCases(data.cases);
       setTimeout(() => setLoading(false), 1500);
     }
@@ -62,7 +62,7 @@ const CaseList = () => {
             <div key={index} className="w-full h-10 text-sm md:text-lg flex hover:bg-gray-400 cursor-pointer" onClick={() => navigate(`/case/${caseItem._id}`)}>
               <div className="w-[20%] md:w-[15%] h-full text-sm flex justify-center items-center border-b">{caseItem.caseNumber}</div>
               <div className="w-[65%] md:w-[70%] h-full text-sm flex items-center border-b pl-5">
-                {caseItem.caseTitle?.length > 32 ? caseItem.caseTitle.slice(0, 32) + "..." : caseItem.caseTitle}
+                {caseItem.caseTitle?.length > 35 ? caseItem.caseTitle.slice(0, 35) + "..." : caseItem.caseTitle}
               </div>
               <div
                 className={`w-[15%] h-full text-sm flex justify-center items-center border-b border-white ${
