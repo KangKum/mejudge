@@ -6,6 +6,7 @@ const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.S
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [result, setResult] = useState("");
+  const [result2, setResult2] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -46,6 +47,7 @@ const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.S
       formData.append("caseTitle", title);
       formData.append("caseText", text);
       formData.append("caseResult", result);
+      formData.append("caseResult2", result2);
       formData.append("image", imageFile);
 
       const res = await fetch(`${apiUrl}/api/case`, {
@@ -108,8 +110,15 @@ const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.S
         <input
           type="text"
           value={result}
-          placeholder="실제 선고 결과"
+          placeholder="실제 선고 결과  ex) 징역 2년 6개월 / 벌금 500만원"
           onChange={(e) => setResult(e.target.value)}
+          className="bg-white w-full my-1 h-10 text-black text-center"
+        />
+        <input
+          type="text"
+          value={result2}
+          placeholder="집행유예 결과  ex) 3년 || 입력X"
+          onChange={(e) => setResult2(e.target.value)}
           className="bg-white w-full my-1 h-10 text-black text-center"
         />
         <textarea

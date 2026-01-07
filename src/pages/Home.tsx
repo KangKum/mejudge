@@ -39,7 +39,7 @@ const Home = () => {
           <button onClick={() => setShowPrivacyForm(true)}>개인정보처리방침</button>
           <button onClick={() => setShowTermsForm(true)}>이용약관</button>
         </div>
-        <div className="mt-10">© 2025 MeJudge. All rights reserved.</div>
+        <div className="mt-10">© 2026 MeJudge. All rights reserved.</div>
       </div>
     </div>
   );
