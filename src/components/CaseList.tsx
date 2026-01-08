@@ -29,7 +29,7 @@ const CaseList = () => {
       setCases(data.cases);
       setTimeout(() => setLoading(false), 1500);
     }
-    setBottomNumber(data.cases[data.cases.length - 1].caseNumber);
+    setBottomNumber(data.cases && data.cases.length > 0 ? data.cases[data.cases.length - 1].caseNumber : 0);
   };
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const CaseList = () => {
   return loading ? (
     <div className="w-full h-full flex justify-center items-center text-sm">{loadingText}</div>
   ) : (
-    <div className={`caseContainer w-[95%] md:min-w-[600px] mx-auto min-h-[400px] max-h-[400px] border-white/70 flex flex-col`}>
+    <div className={`caseContainer w-[95%] md:w-[600px] mx-auto h-[400px] border-white/70 flex flex-col`}>
       <div className="w-full min-h-7 md:min-h-8 text-sm md:text-base flex justify-center items-center rounded bg-white/70 text-black">
         <div className="w-[20%] md:w-[15%] h-full flex justify-center items-center">사건번호</div>
         <div className="w-[65%] md:w-[70%] h-full flex justify-center items-center">제목</div>
