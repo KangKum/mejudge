@@ -20,17 +20,16 @@ const CaseList = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingText, setLoadingText] = useState("사건 분류중");
   const [caseLimit, setCaseLimit] = useState<number>(10);
-  const [caseCount, setCaseCount] = useState(0);
+  const [bottomNumber, setBottomNumber] = useState<number>(0);
 
   const fetchCases = async () => {
     const res = await fetch(`${apiUrl}/api/cases?limit=${caseLimit}`, { method: "GET" });
     const data = await res.json();
-    console.log(data);
     if (res.status === 200) {
-      setCaseCount(data.length);
       setCases(data.cases);
       setTimeout(() => setLoading(false), 1500);
     }
+    setBottomNumber(data.cases[data.cases.length - 1].caseNumber);
   };
 
   useEffect(() => {
@@ -47,48 +46,51 @@ const CaseList = () => {
     return () => clearInterval(interval);
   }, [loading]);
 
-  return (
-    <div className={`caseContainer w-[340px] md:min-w-[600px] md:h-[500px] bg-gray-800 border-white/90 flex flex-col`}>
-      <div className="w-full min-h-8 md:min-h-10 text-sm md:text-base flex justify-center items-center bg-white/90 text-black">
+  return loading ? (
+    <div className="w-full h-full flex justify-center items-center text-sm">{loadingText}</div>
+  ) : (
+    <div className={`caseContainer w-[95%] md:min-w-[600px] mx-auto min-h-[400px] max-h-[400px] border-white/70 flex flex-col`}>
+      <div className="w-full min-h-7 md:min-h-8 text-sm md:text-base flex justify-center items-center rounded bg-white/70 text-black">
         <div className="w-[20%] md:w-[15%] h-full flex justify-center items-center">사건번호</div>
         <div className="w-[65%] md:w-[70%] h-full flex justify-center items-center">제목</div>
         <div className="w-[15%] h-full flex justify-center items-center">상태</div>
       </div>
-      {loading ? (
-        <div className="w-full h-full flex justify-center items-center">{loadingText}</div>
-      ) : (
-        <div className={`w-full overflow-y-auto overflow-x-hidden`}>
-          {cases.map((caseItem, index) => (
-            <div key={index} className="w-full h-10 text-sm md:text-lg flex hover:bg-gray-400 cursor-pointer" onClick={() => navigate(`/case/${caseItem._id}`)}>
-              <div className="w-[20%] md:w-[15%] h-full text-sm flex justify-center items-center border-b">{caseItem.caseNumber}</div>
-              <div className="w-[65%] md:w-[70%] h-full text-sm flex items-center border-b pl-5">
-                {caseItem.caseTitle?.length > 35 ? caseItem.caseTitle.slice(0, 35) + "..." : caseItem.caseTitle}
-              </div>
-              <div
-                className={`w-[15%] h-full text-sm flex justify-center items-center border-b border-white ${
-                  userId && (caseItem.sentencedUsers ?? []).includes(userId)
-                    ? "text-green-500"
-                    : userId && (caseItem.readUsers ?? []).includes(userId)
-                    ? "text-yellow-500"
-                    : "text-red-500"
-                }`}
-              >
-                {userId ? ((caseItem.sentencedUsers ?? []).includes(userId) ? "선고" : (caseItem.readUsers ?? []).includes(userId) ? "읽음" : "미확인") : ""}
-              </div>
+      <div className={`w-full h-full overflow-y-auto overflow-x-hidden`}>
+        {cases.map((caseItem, index) => (
+          <div
+            key={index}
+            className="w-full h-10 text-sm md:text-lg flex hover:bg-gray-400 active:bg-gray-400 cursor-pointer border-b border-gray-600"
+            onClick={() => navigate(`/case/${caseItem._id}`)}
+          >
+            <div className="w-[20%] md:w-[15%] h-full text-sm flex justify-center items-center">{caseItem.caseNumber}</div>
+            <div className="w-[65%] md:w-[70%] h-full text-sm flex items-center pl-5">
+              {caseItem.caseTitle?.length > 35 ? caseItem.caseTitle.slice(0, 35) + "..." : caseItem.caseTitle}
             </div>
-          ))}
-
-          {caseCount > cases.length && (
-            <button className="my-2 p-2 flex justify-center items-center gap-2 w-[60%] mx-auto" onClick={() => setCaseLimit((prev) => prev + 3)}>
-              <span>더보기</span>{" "}
-              <span>
-                <IoIosArrowDown size={18} />
-              </span>
-            </button>
-          )}
-        </div>
+            <div
+              className={`w-[15%] h-full text-sm flex justify-center items-center ${
+                userId && (caseItem.sentencedUsers ?? []).includes(userId)
+                  ? "text-green-500"
+                  : userId && (caseItem.readUsers ?? []).includes(userId)
+                  ? "text-yellow-500"
+                  : "text-red-500"
+              }`}
+            >
+              {userId ? ((caseItem.sentencedUsers ?? []).includes(userId) ? "선고" : (caseItem.readUsers ?? []).includes(userId) ? "읽음" : "미확인") : ""}
+            </div>
+          </div>
+        ))}
+      </div>
+      {bottomNumber !== 1 ? (
+        <button className="my-2 p-2 flex justify-center items-center gap-2 w-[60%] h-10 mx-auto" onClick={() => setCaseLimit((prev) => prev + 5)}>
+          <span>
+            <IoIosArrowDown size={18} />
+          </span>
+        </button>
+      ) : (
+        <div className="my-2 p-2 flex justify-center items-center gap-2 w-[60%] h-10 mx-auto"></div>
       )}
     </div>
   );
 };
+
 export default CaseList;

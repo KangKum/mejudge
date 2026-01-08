@@ -6,18 +6,18 @@ const Header = () => {
   const isLoggedIn = !!localStorage.getItem("MJKRtoken");
 
   return (
-    <header className="w-full h-[6%] flex justify-between md:justify-center items-center bg-black text-white">
-      <div className="buttonsPart md:w-[90%] h-full flex justify-center items-center ml-3">
+    <header className="w-full h-[5%] md:h-[6%] flex justify-between md:justify-center items-center bg-black text-white">
+      <div className="buttonsPart md:w-[90%] h-full flex justify-center items-center ml-3 md:gap-2">
         <button
-          className={`md:flex-none w-16 md:ml-34 md:w-[100px] h-full border-black border-b-2 mr-1 ${
-            pathname === "/" ? "font-bold border-b-2 border-white" : ""
-          } ${pathname === "/" ? "" : "hover:border-b-2 hover:border-white/50"} `}
+          className={`md:flex-none w-16 md:ml-34 md:w-[100px] h-full border-black border-b-2 ${pathname === "/" ? "font-bold border-b-2 border-white" : ""} ${
+            pathname === "/" ? "" : "hover:border-b-2 hover:border-white/50"
+          } `}
           onClick={() => navigate("/")}
         >
           홈
         </button>
         <button
-          className={`md:flex-none w-16 md:w-[100px] h-full border-black border-b-2 mr-1 ${pathname === "/main" ? "font-bold border-b-2 border-white" : ""} ${
+          className={`md:flex-none w-16 md:w-[100px] h-full border-black border-b-2 ${pathname === "/main" ? "font-bold border-b-2 border-white" : ""} ${
             pathname === "/main" ? "" : "hover:border-b-2 hover:border-white/50"
           } `}
           onClick={() => navigate("/main")}
@@ -25,7 +25,7 @@ const Header = () => {
           사건
         </button>
         <button
-          className={`md:flex-none w-16 md:w-[100px] h-full border-black border-b-2 mr-1 ${pathname === "/rank" ? "font-bold border-b-2 border-white" : ""} ${
+          className={`md:flex-none w-16 md:w-[100px] h-full border-black border-b-2 ${pathname === "/rank" ? "font-bold border-b-2 border-white" : ""} ${
             pathname === "/rank" ? "" : "hover:border-b-2 hover:border-white/50"
           }`}
           onClick={() => navigate("/rank")}
