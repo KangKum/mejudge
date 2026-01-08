@@ -395,8 +395,8 @@ const CasePage = () => {
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="w-[90%] md:w-[55%] flex flex-col">
-        <div className="w-full h-10 mb-2 flex justify-between items-center">
-          <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "hover:font-bold"}`} onClick={async () => pastCase()}>
+        <div className="w-full h-8 mb-2 flex justify-between items-center mt-4">
+          <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "active:font-bold"}`} onClick={async () => pastCase()}>
             이전 사건
           </button>
           {isAdmin && (
@@ -409,11 +409,11 @@ const CasePage = () => {
               DELETE
             </button>
           )}
-          <button className={`text-sm md:text-base ${caseNumber === latestCaseNumber ? "text-gray-500" : "hover:font-bold"}`} onClick={async () => nextCase()}>
+          <button className={`text-sm md:text-base ${caseNumber === latestCaseNumber ? "text-gray-500" : "active:font-bold"}`} onClick={async () => nextCase()}>
             다음 사건
           </button>
         </div>
-        <div className="titlePart w-full max-h-14 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl cursor-default">{caseData?.caseTitle}</div>
+        <div className="titlePart w-full h-8 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl cursor-default">{caseData?.caseTitle}</div>
         <div className="webtoonPart w-full">
           {caseData?.caseNumber && <img src={`${imgUrl}/cases/${caseData.caseNumber}/case${caseData.caseNumber}_1.webp`} alt="case image" />}
         </div>
