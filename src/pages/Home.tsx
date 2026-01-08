@@ -16,7 +16,7 @@ const Home = () => {
       {showTermsForm && <TermsForm setShowTermsForm={setShowTermsForm} />}
       {showAskForm && <AskForm setShowAskForm={setShowAskForm} />}
       <div className="w-[85%] md:w-[60%] md:min-w-[800px] md:min-h-[600px] flex flex-col items-center">
-        <div className="blankSpace h-[150px]"></div>
+        <div className="blankSpace h-[120px] md:h-[150px]"></div>
         <span className="homeTitle text-5xl md:text-8xl">내가 판사라면</span>
         <div className="blankSpace h-[100px]"></div>
         <span className="homeSub1 w-[320px] md:w-[550px] text-base md:text-xl flex justify-center text-center">
