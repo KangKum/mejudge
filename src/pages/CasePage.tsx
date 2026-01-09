@@ -393,7 +393,7 @@ const CasePage = () => {
   }, [userId, caseId]);
 
   return (
-    <div className="w-full h-full overflow-y-hidden flex flex-col justify-center items-center">
+    <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="w-[90%] md:w-[55%] flex flex-col">
         <div className="w-full h-8 mb-2 flex justify-between items-center mt-4">
           <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "active:font-bold"}`} onClick={async () => pastCase()}>
