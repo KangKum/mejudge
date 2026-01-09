@@ -32,9 +32,9 @@ const Master = () => {
   ) : (
     <div className="w-full flex flex-col justify-center items-center">
       <div className="blankSpace w-full h-20"></div>
-      <div className="w-[80%] md:w-full flex md:flex-row flex-col justify-center gap-10">
+      <div className="w-[80%] mx-auto md:w-[80%] flex md:flex-row flex-col justify-center gap-10">
         <button
-          className="w-[340px] h-[200px] md:min-w-[400px] md:h-[444px] md:text-4xl bg-gray-600 hover:cursor-pointer hover:font-bold"
+          className="w-[315px] h-[200px] md:min-w-[400px] md:h-[444px] md:text-4xl bg-gray-600 hover:cursor-pointer hover:font-bold"
           onClick={() => adminValidate()}
         >
           사건등록
