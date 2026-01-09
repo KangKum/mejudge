@@ -7,9 +7,10 @@ body {
   padding: 0;
 }
 
+html,
+body,
+#root,
 .layout {
-  width: 100dvw;
-  height: 100dvh;
   overflow: hidden;
   overscroll-behavior: none;
 }
