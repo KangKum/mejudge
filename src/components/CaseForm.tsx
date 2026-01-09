@@ -30,17 +30,17 @@ const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.S
       return;
     }
 
-    if (!result.trim() || result.trim().slice(0, 2) !== "징역" || result.trim().slice(0, 2) !== "벌금") {
+    if (!result.trim() || (result.trim().slice(0, 2) !== "징역" && result.trim().slice(0, 2) !== "벌금")) {
       alert("실제 선고 결과를 입력해주세요.");
       return;
     }
 
     if (
-      result2.trim() !== "" ||
-      result2.trim() !== "1년" ||
-      result2.trim() !== "2년" ||
-      result2.trim() !== "3년" ||
-      result2.trim() !== "4년" ||
+      result2.trim() !== "" &&
+      result2.trim() !== "1년" &&
+      result2.trim() !== "2년" &&
+      result2.trim() !== "3년" &&
+      result2.trim() !== "4년" &&
       result2.trim() !== "5년"
     ) {
       alert("집행유예 결과는 ' ', '1년', '2년', '3년', '4년', '5년' 중 하나로 입력해주세요.");
