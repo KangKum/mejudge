@@ -52,7 +52,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full h-dvh flex flex-col justify-center items-center overflow-y-hidden">
+    <div className="w-full h-full overflow-y-hidden flex flex-col justify-center items-center overflow-y-hidden">
       <div className="blankSpace w-full h-60"></div>
       <form onSubmit={handleLogin} className="w-[500px] h-[200px] flex flex-col items-center">
         <input type="text" placeholder="아이디" className="mb-4 p-2 border rounded w-[250px]" value={id} onChange={(e) => setId(e.target.value)} />

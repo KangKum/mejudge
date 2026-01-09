@@ -193,7 +193,7 @@ const Info = () => {
     }
   }, [userId]);
   return (
-    <div className="flex flex-col h-dvh items-center cursor-default">
+    <div className="flex flex-col h-full overflow-y-hidden items-center cursor-default">
       <div className="blankSpace w-full h-20 md:h-45"></div>
       <div className="flex flex-col items-center w-[45%] md:w-[35%]">
         <div className="w-full md:h-30 flex flex-col md:flex-row md:justify-between gap-3">
