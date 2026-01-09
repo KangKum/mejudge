@@ -6,16 +6,19 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-
+  overflow: hidden; /* 전체 바운스 차단 */
+}
+#root {
+  height: 100%;
+  overflow-y: auto;
   touch-action: pan-y;
+  -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
 }
 button {
   outline: none;
   cursor: pointer;
 }
-/* button:active {
-  transform: scale(0.95);
-} */
+
 textarea {
   outline: none;
   resize: none;
