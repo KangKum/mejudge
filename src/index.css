@@ -7,10 +7,6 @@ body,
   margin: 0;
   padding: 0;
 }
-#root {
-  /* touch-action: pan-y; */
-  /* -webkit-overflow-scrolling: touch; iOS 부드러운 스크롤 */
-}
 button {
   outline: none;
   cursor: pointer;
