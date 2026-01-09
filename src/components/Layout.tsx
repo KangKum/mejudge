@@ -6,7 +6,7 @@ const Layout = () => {
   const showHeader = !HIDE_HEADER_PATHS.includes(pathname);
 
   return (
-    <div className="layout w-full h-full">
+    <div className="layout w-full h-full overscroll-none">
       {showHeader && <Header />}
       <main className={`w-full ${showHeader ? "min-h-[95%] md:min-h-[94%]" : "min-h-full"} bg-black text-white`}>
         <Outlet />
