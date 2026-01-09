@@ -8,10 +8,9 @@ const Layout = () => {
   return (
     <div className="layout w-full h-full">
       {showHeader && <Header />}
-      <main className={`w-full ${showHeader ? "min-h-[92%]" : "min-h-full"} bg-black text-white`}>
+      <main className={`w-full ${showHeader ? "min-h-[95%] md:min-h-[94%]" : "min-h-full"} bg-black text-white`}>
         <Outlet />
       </main>
-      <footer className="w-full h-[2%] bg-black"></footer>
     </div>
   );
 };
