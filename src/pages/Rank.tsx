@@ -35,7 +35,7 @@ const Rank = () => {
   }, [loading]);
 
   return (
-    <div className="md:w-[40%] w-[85%] flex flex-col mx-auto items-center">
+    <div className="md:w-[40%] w-[85%] h-dvh flex flex-col mx-auto items-center">
       <div className="blankSpace h-4 md:h-8"></div>
       <div className="w-full h-full flex flex-col justify-center items-center">
         <h1 className="text-sm md:text-base font-bold text-gray-600 cursor-default hover:text-gray-400">오후 9시마다 갱신됩니다</h1>

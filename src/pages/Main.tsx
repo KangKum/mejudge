@@ -7,7 +7,7 @@ const Main = () => {
   }, []);
 
   return (
-    <div className="w-full flex flex-col justify-center items-center cursor-default">
+    <div className="w-full h-dvh flex flex-col justify-center items-center cursor-default">
       <div className="blankSpace h-16 md:h-28"></div>
       <div className="caseContainerForLoggedOut w-full">
         <CaseList />

@@ -11,7 +11,7 @@ const Home = () => {
   const [showAskForm, setShowAskForm] = useState(false);
 
   return (
-    <div className="w-full flex justify-center cursor-default">
+    <div className="w-full h-dvh flex justify-center cursor-default">
       {showPrivacyForm && <PrivacyForm setShowPrivacyForm={setShowPrivacyForm} />}
       {showTermsForm && <TermsForm setShowTermsForm={setShowTermsForm} />}
       {showAskForm && <AskForm setShowAskForm={setShowAskForm} />}

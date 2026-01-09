@@ -64,7 +64,7 @@ const CaseList = () => {
           >
             <div className="w-[20%] md:w-[15%] h-full text-sm flex justify-center items-center">{caseItem.caseNumber}</div>
             <div className="w-[65%] md:w-[70%] h-full text-sm flex items-center pl-5">
-              {caseItem.caseTitle?.length > 35 ? caseItem.caseTitle.slice(0, 35) + "..." : caseItem.caseTitle}
+              {caseItem.caseTitle?.length > 15 ? caseItem.caseTitle.slice(0, 15) + "..." : caseItem.caseTitle}
             </div>
             <div
               className={`w-[15%] h-full text-sm flex justify-center items-center ${
