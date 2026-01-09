@@ -393,9 +393,9 @@ const CasePage = () => {
   }, [userId, caseId]);
 
   return (
-    <div className="w-full h-full overflow-y-auto overscroll-contain touch-pan-y">
-      <div className="w-[90%] md:w-[55%] mx-auto flex flex-col">
-        <div className="w-full h-8 mb-2 flex justify-between items-center mt-4">
+    <div className="w-full h-full">
+      <div className="w-[90%] md:w-[95%] mx-auto h-full overflow-y-auto overscroll-contain touch-pan-y">
+        <div className="w-full md:w-[50%] mx-auto h-8 mb-2 flex justify-between items-center mt-4">
           <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "active:font-bold"}`} onClick={async () => pastCase()}>
             이전 사건
           </button>
@@ -413,13 +413,15 @@ const CasePage = () => {
             다음 사건
           </button>
         </div>
-        <div className="titlePart w-full h-8 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl cursor-default">{caseData?.caseTitle}</div>
-        <div className="webtoonPart w-full">
+        <div className="titlePart w-full md:w-[50%] mx-auto h-8 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl cursor-default">
+          {caseData?.caseTitle}
+        </div>
+        <div className="webtoonPart w-full md:w-[50%] mx-auto">
           {caseData?.caseNumber && <img src={`${imgUrl}/cases/${caseData.caseNumber}/case${caseData.caseNumber}_1.webp`} alt="case image" />}
         </div>
         <div className="blankSpace h-4"></div>
-        <div className="textPart w-full whitespace-pre-line text-lg">{caseData?.caseText}</div>
-        <div className="commentPart w-full mt-6">
+        <div className="textPart w-full md:w-[50%] mx-auto whitespace-pre-line text-lg">{caseData?.caseText}</div>
+        <div className="commentPart w-full md:w-[50%] mx-auto mt-6">
           <div className="commentUpPart h-8 text-lg my-2">댓글({commentCount})</div>
           <div className="commentMiddlePart flex flex-col items-center p-2 border mb-4">
             <div className="idPart w-full mb-1">{userNickname}</div>
@@ -517,7 +519,7 @@ const CasePage = () => {
             {commentCount <= commentLimit ? <div className="h-10 w-full"></div> : null}
           </div>
         </div>
-        <div className={`footerPart w-[90%] pb-2 flex flex-col mx-auto mt-2 ${isSentenced ? "hidden" : ""}`}>
+        <div className={`footerPart w-[90%] md:w-[50%] mx-auto pb-2 flex flex-col mt-2 ${isSentenced ? "hidden" : ""}`}>
           <div className="w-[60%] md:w-[50%] mx-auto min-h-8 md:min-h-10 flex justify-center">
             <button className={`flex-1 min-h-full rounded-l ${mode === 0 ? "bg-blue-600" : "bg-gray-400"}`} onClick={() => setMode(0)}>
               징역형
@@ -665,7 +667,7 @@ const CasePage = () => {
             </div>
           )}
         </div>
-        <div className="sentencePart flex justify-center items-center w-full h-45">
+        <div className="sentencePart flex justify-center items-center w-[90%] md:w-[50%] mx-auto h-45">
           {isSentenced ? (
             <div className="w-[90%] md:w-[50%] flex gap-10">
               <div className="flex flex-col w-[50%] bg-gray-200 text-black p-2">
