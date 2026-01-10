@@ -24,9 +24,9 @@ const Home = () => {
           <br />
           실제 판결과 비교할 수 있는 플랫폼입니다.
         </span>
-        <div className="blankSpace h-10"></div>
+        <div className="blankSpace h-8"></div>
         <span className="homeSub2 text-xs md:text-sm">※본 플랫폼은 국가 기관과 무관한 독립적인 서비스입니다.</span>
-        <div className="blankSpace h-20"></div>
+        <div className="blankSpace h-18"></div>
         <button
           className="homeButton md:rounded-xl rounded-lg bg-[#e5e0e0] p-2 md:p-4 text-base md:text-2xl text-black hover:cursor-pointer"
           onClick={() => navigate("/main")}
@@ -35,7 +35,7 @@ const Home = () => {
         </button>
         <div className="blankSpace h-3"></div>
         <span className="homeSub2 text-xs md:text-sm text-gray-400">15세 이상 권장</span>
-        <div className="blankSpace h-15"></div>
+        <div className="blankSpace h-12"></div>
         <div className="flex w-[77%] md:w-[35%] justify-between text-sm md:text-base">
           <button onClick={() => setShowAskForm(true)}>고객센터</button>
           <button onClick={() => setShowPrivacyForm(true)}>개인정보처리방침</button>

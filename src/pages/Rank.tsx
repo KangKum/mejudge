@@ -36,9 +36,8 @@ const Rank = () => {
 
   return (
     <div className="md:w-[40%] w-[85%] h-full flex flex-col mx-auto">
-      <div className="blankSpace h-8 md:h-12"></div>
+      <div className="blankSpace h-2 md:h-3"></div>
       <div className="w-full h-full flex flex-col items-center">
-        <h1 className="text-sm md:text-base font-bold text-gray-600 cursor-default hover:text-gray-400">오후 9시마다 갱신됩니다</h1>
         <div className="flex w-full h-12 justify-center items-center gap-1">
           <div className="w-[20%] h-full flex justify-center items-center md:text-lg cursor-default border-b">순위</div>
           <div className="w-[60%] h-full flex justify-center items-center md:text-lg cursor-default border-b">닉네임</div>
@@ -47,7 +46,10 @@ const Rank = () => {
           </div>
         </div>
         {loading ? (
-          <div className="w-full mt-20 flex justify-center">{loadingText}</div>
+          <>
+            <h1 className="my-20 text-xl font-bold text-gray-600 cursor-default hover:text-gray-400">오후 9시마다 갱신됩니다</h1>
+            <div className="w-full flex justify-center">{loadingText}</div>
+          </>
         ) : (
           <div className="w-full overflow-y-auto overflow-x-hidden">
             {rankings.map((user, index) => (

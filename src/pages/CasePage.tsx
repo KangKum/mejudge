@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa6";
@@ -392,9 +392,17 @@ const CasePage = () => {
     markAsRead();
   }, [userId, caseId]);
 
+  // 실제 스크롤이 발생하는 div를 맨 위로 이동
+  const scrollRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [caseId]);
+
   return (
     <div className="w-full h-full">
-      <div className="w-[90%] md:w-[95%] mx-auto h-full overflow-y-auto overscroll-contain touch-pan-y">
+      <div ref={scrollRef} className="w-[90%] md:w-[95%] mx-auto h-full overflow-y-auto overscroll-contain touch-pan-y">
         <div className="w-full md:w-[50%] mx-auto h-8 mb-2 flex justify-between items-center mt-4">
           <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "active:font-bold"}`} onClick={async () => pastCase()}>
             이전 사건
@@ -691,6 +699,14 @@ const CasePage = () => {
               <div className="w-full flex justify-center my-4 cursor-default text-gray-400 text-sm">선고 후에 실제 판결을 확인할 수 있습니다</div>
             </div>
           )}
+        </div>
+        <div className="w-full md:w-[50%] mx-auto h-8 mb-2 flex justify-between items-center mt-4">
+          <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "active:font-bold"}`} onClick={async () => pastCase()}>
+            이전 사건
+          </button>
+          <button className={`text-sm md:text-base ${caseNumber === latestCaseNumber ? "text-gray-500" : "active:font-bold"}`} onClick={async () => nextCase()}>
+            다음 사건
+          </button>
         </div>
       </div>
     </div>
