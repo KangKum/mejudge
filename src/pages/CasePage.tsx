@@ -542,7 +542,7 @@ const CasePage = () => {
           </div>
         </div>
         <div className={`footerPart w-[90%] md:w-[50%] mx-auto pb-2 flex flex-col mt-2 ${isSentenced ? "hidden" : ""}`}>
-          <div className="w-[60%] md:w-[50%] mx-auto min-h-8 md:min-h-10 flex justify-center">
+          <div className="w-[60%] md:w-[50%] mx-auto min-h-8 md:min-h-10 flex justify-center mb-2">
             <button className={`flex-1 min-h-full rounded-l ${mode === 0 ? "bg-blue-600" : "bg-gray-400"}`} onClick={() => setMode(0)}>
               징역형
             </button>
@@ -551,16 +551,16 @@ const CasePage = () => {
             </button>
           </div>
           {mode === 0 ? (
-            <div className="flex flex-col h-40 md:h-50">
-              <div className="w-full h-20 md:h-30 flex justify-center items-center text-xl md:text-2xl font-bold">
+            <div className="flex flex-col h-40 md:h-44">
+              <div className="w-full h-12 md:h-16 flex justify-center items-center text-xl md:text-2xl font-bold">
                 {year === 50 && month === 11 ? "무기징역" : year > 0 ? "징역" + " " + year + "년" + " " + month + "개월" : "징역" + " " + month + "개월"}
               </div>
-              <div className="w-[95%] h-12 md:h-25 flex flex-col mx-auto gap-3 md:gap-5">
+              <div className="w-[95%] h-18 md:h-18 flex flex-col mx-auto gap-3 md:gap-5 justify-center">
                 <input type="range" min={Ymin} max={Ymax} value={year} onChange={(e) => setYear(Number(e.target.value))} />
                 <input type="range" min={Mmin} max={Mmax} value={month} onChange={(e) => setMonth(Number(e.target.value))} />
               </div>
               <div
-                className={`h-14 mt-4 w-[95%] mx-auto flex flex-row my-auto ${
+                className={`h-10 md:h-10 mt-4 w-[95%] mx-auto flex flex-row my-auto ${
                   (year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4 ? "text-gray-500" : ""
                 }`}
               >
@@ -647,9 +647,9 @@ const CasePage = () => {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center h-40 md:h-50">
-              <div className="w-full h-20 md:h-30 flex justify-center items-center text-xl md:text-2xl font-bold">벌금 {(fine ?? 0).toLocaleString()}원</div>
-              <div className="w-[98%] md:h-12 flex justify-center items-center gap-2 mb-1">
+            <div className="flex flex-col items-center h-40 md:h-44">
+              <div className="w-full h-12 md:h-16 flex justify-center items-center text-xl md:text-2xl font-bold">벌금 {(fine ?? 0).toLocaleString()}원</div>
+              <div className="w-[98%] h-14 md:h-14 flex justify-center items-center gap-2 mb-1">
                 <button className="border flex-1 text-xs md:text-base h-10 rounded" onClick={() => setFine((prev) => prev + 100000000)}>
                   +1억
                 </button>
@@ -663,7 +663,7 @@ const CasePage = () => {
                   +10만원
                 </button>
               </div>
-              <div className="w-[98%] md:h-12 flex justify-center items-center gap-2">
+              <div className="w-[98%] h-14 md:h-14 flex justify-center items-center gap-2">
                 <button
                   className="border flex-1 text-xs md:text-base h-10 rounded"
                   onClick={() => setFine((prev) => (prev - 100000000 < 0 ? 0 : prev - 100000000))}
