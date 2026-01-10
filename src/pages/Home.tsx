@@ -3,6 +3,7 @@ import { useState } from "react";
 import PrivacyForm from "../components/PrivacyForm";
 import TermsForm from "../components/TermsForm";
 import AskForm from "../components/AskForm";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -12,12 +13,20 @@ const Home = () => {
 
   return (
     <div className="w-full h-dvh flex justify-center cursor-default">
+      <Helmet>
+        <title>나의 판결 | 실제 판결문 기반 형량 판단 서비스</title>
+        <meta
+          name="description"
+          content="나의 판결은 실제 판결문을 바탕으로 사용자가 직접 형량을 판단하고 실제 법원의 판결과 비교할 수 있는 법 판단 체험 플랫폼입니다."
+        />
+        <link rel="canonical" href="https://mejudge.com/" />
+      </Helmet>
       {showPrivacyForm && <PrivacyForm setShowPrivacyForm={setShowPrivacyForm} />}
       {showTermsForm && <TermsForm setShowTermsForm={setShowTermsForm} />}
       {showAskForm && <AskForm setShowAskForm={setShowAskForm} />}
       <div className="w-[85%] md:w-[60%] md:min-w-[800px] md:min-h-[600px] flex flex-col items-center">
         <div className="blankSpace h-[120px] md:h-[150px]"></div>
-        <span className="homeTitle text-5xl md:text-8xl">내가 판사라면</span>
+        <span className="homeTitle text-5xl md:text-8xl">나의 판결</span>
         <div className="blankSpace h-[100px]"></div>
         <span className="homeSub1 w-[320px] md:w-[550px] text-base md:text-xl flex justify-center text-center">
           실제로 발생했던 범죄 사건을 직접 판결하고,
@@ -36,10 +45,11 @@ const Home = () => {
         <div className="blankSpace h-3"></div>
         <span className="homeSub2 text-xs md:text-sm text-gray-400">15세 이상 권장</span>
         <div className="blankSpace h-12"></div>
-        <div className="flex w-[77%] md:w-[35%] justify-between text-sm md:text-base">
-          <button onClick={() => setShowAskForm(true)}>고객센터</button>
+        <div className="flex w-[96%] md:w-[50%] justify-between text-sm md:text-base">
+          <button onClick={() => navigate("/about")}>서비스 소개</button>
           <button onClick={() => setShowPrivacyForm(true)}>개인정보처리방침</button>
           <button onClick={() => setShowTermsForm(true)}>이용약관</button>
+          <button onClick={() => setShowAskForm(true)}>문의</button>
         </div>
         <div className="mt-10">© 2026 MeJudge. All rights reserved.</div>
       </div>

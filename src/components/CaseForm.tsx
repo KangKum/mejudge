@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -88,6 +89,9 @@ const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.S
 
   return (
     <div className="overlay overflow-y-auto" onClick={() => confirm("사건 등록을 취소하시겠습니까?") && setShowCaseForm(false)}>
+      <Helmet>
+        <meta name="robots" content="noindex,nofollow" />
+      </Helmet>
       <div className="w-[380px] md:w-[800px] mx-auto mt-20 border-white bg-black" onClick={(e) => e.stopPropagation()}>
         <div className="webtoonPart"></div>
         <input

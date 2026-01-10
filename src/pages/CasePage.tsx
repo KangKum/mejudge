@@ -5,6 +5,7 @@ import { FaThumbsUp, FaThumbsDown } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaMedal } from "react-icons/fa";
 import { MdGavel } from "react-icons/md";
+import { Helmet } from "react-helmet-async";
 
 interface ICaseItem {
   _id: string;
@@ -402,6 +403,19 @@ const CasePage = () => {
 
   return (
     <div className="w-full h-full">
+      <Helmet>
+        <title>{caseData ? `${caseData.caseTitle} | 나의 판결` : "사건 상세 | 나의 판결"}</title>
+        <meta
+          name="description"
+          content={
+            caseData
+              ? `${caseData.caseTitle} 사건의 판결문을 읽고 직접 형량을 판단해보세요. 실제 판결과 비교할 수 있습니다.`
+              : "실제 판결문을 읽고 직접 형량을 판단해보세요."
+          }
+        />
+        <link rel="canonical" href={`https://mejudge.com/case/${caseId}`} />
+      </Helmet>
+
       <div ref={scrollRef} className="w-[90%] md:w-[95%] mx-auto h-full overflow-y-auto overscroll-contain touch-pan-y">
         <div className="w-full md:w-[50%] mx-auto h-8 mb-2 flex justify-between items-center mt-4">
           <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "active:font-bold"}`} onClick={async () => pastCase()}>
