@@ -87,7 +87,11 @@ const Signup = () => {
           onFocus={() => setShowAlertText(true)}
           onBlur={() => setShowAlertText(false)}
         />
-        <div className={`text-sm mb-10 cursor-default ${showAlertText ? "text-white" : "text-black"}`}>부적절한 닉네임은 이용에 제약을 받을 수 있습니다.</div>
+        {showAlertText ? (
+          <div className="h-6 text-sm mb-10 cursor-default text-white">부적절한 닉네임은 이용에 제약을 받을 수 있습니다.</div>
+        ) : (
+          <div className="h-6 text-sm mb-10 cursor-default text-white"></div>
+        )}
         <button type="submit" className="bg-blue-600 text-white p-2 rounded w-[250px]">
           회원가입
         </button>
