@@ -49,14 +49,9 @@ textarea {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Webkit (크롬, 사파리, 엣지) */
 ::-webkit-scrollbar {
-  width: 2px;
-  background: #000000;
-}
-::-webkit-scrollbar-thumb {
-  background: #000000;
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #000000;
+  display: none;
+  width: 0 !important;
+  background: transparent;
 }
