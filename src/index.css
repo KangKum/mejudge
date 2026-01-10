@@ -51,12 +51,12 @@ textarea {
 
 ::-webkit-scrollbar {
   width: 2px;
-  background: #ffffff00;
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ffffff00;
+  background: #000000;
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ffffff00;
+  background: #000000;
 }
