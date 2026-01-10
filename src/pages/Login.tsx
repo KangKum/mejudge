@@ -53,7 +53,7 @@ const Login = () => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
-      <div className="blankSpace w-full h-60"></div>
+      <div className="blankSpace w-full h-20"></div>
       <form onSubmit={handleLogin} className="w-[500px] h-[200px] flex flex-col items-center">
         <input type="text" placeholder="아이디" className="mb-4 p-2 border rounded w-[250px]" value={id} onChange={(e) => setId(e.target.value)} />
         <input

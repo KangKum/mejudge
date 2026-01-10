@@ -714,7 +714,7 @@ const CasePage = () => {
             </div>
           )}
         </div>
-        <div className="w-full md:w-[50%] mx-auto h-8 mb-2 flex justify-between items-center mt-4">
+        <div className="w-full md:w-[50%] mx-auto h-8 mb-20 flex justify-between items-center mt-4">
           <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "active:font-bold"}`} onClick={async () => pastCase()}>
             이전 사건
           </button>
