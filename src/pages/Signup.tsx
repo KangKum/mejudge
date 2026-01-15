@@ -60,39 +60,86 @@ const Signup = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center">
+    <div className="w-full h-full flex flex-col justify-center items-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="blankSpace w-full h-15"></div>
-      <form onSubmit={handleSignup} className="w-[500px] h-[400px] flex flex-col justify-center items-center">
-        <input type="text" placeholder="아이디" className="mb-4 p-2 border rounded w-[250px]" value={id} onChange={(e) => setId(e.target.value)} />
+      <form
+        onSubmit={handleSignup}
+        className="w-[90%] md:w-[500px] flex flex-col justify-center items-center p-6 rounded-xl"
+        style={{
+          backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid var(--border-primary)'
+        }}
+      >
+        <input
+          type="text"
+          placeholder="아이디"
+          className="mb-4 p-3 rounded-lg w-full md:w-[250px] transition-all duration-150"
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+          onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
+        />
         <input
           type="password"
           placeholder="비밀번호"
-          className="mb-4 p-2 border rounded w-[250px]"
+          className="mb-4 p-3 rounded-lg w-full md:w-[250px] transition-all duration-150"
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+          onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
         />
         <input
           type="password"
           placeholder="비밀번호 확인"
-          className="mb-4 p-2 border rounded w-[250px]"
+          className="mb-4 p-3 rounded-lg w-full md:w-[250px] transition-all duration-150"
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+          onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
         />
         <input
           type="text"
           placeholder="닉네임"
-          className="mb-4 p-2 border rounded w-[250px]"
+          className="mb-4 p-3 rounded-lg w-full md:w-[250px] transition-all duration-150"
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
-          onFocus={() => setShowAlertText(true)}
-          onBlur={() => setShowAlertText(false)}
+          onFocus={(e) => {
+            e.currentTarget.style.borderColor = 'var(--accent-primary)';
+            setShowAlertText(true);
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.borderColor = 'var(--border-primary)';
+            setShowAlertText(false);
+          }}
         />
         {showAlertText ? (
-          <div className="h-6 text-sm mb-10 cursor-default text-white">부적절한 닉네임은 이용에 제약을 받을 수 있습니다.</div>
+          <div className="h-6 text-sm mb-6 cursor-default" style={{ color: 'var(--text-secondary)' }}>
+            부적절한 닉네임은 이용에 제약을 받을 수 있습니다.
+          </div>
         ) : (
-          <div className="h-6 text-sm mb-10 cursor-default text-white"></div>
+          <div className="h-6 text-sm mb-6 cursor-default"></div>
         )}
-        <button type="submit" className="bg-blue-600 text-white p-2 rounded w-[250px]">
+        <button type="submit" className="btn-primary w-full md:w-[250px]">
           회원가입
         </button>
       </form>

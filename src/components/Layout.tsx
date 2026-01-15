@@ -6,9 +6,12 @@ const Layout = () => {
   const showHeader = !HIDE_HEADER_PATHS.includes(pathname);
 
   return (
-    <div className="layout w-full h-screen overflow-hidden flex flex-col">
+    <div className="layout w-full h-screen overflow-hidden flex flex-col" style={{ backgroundColor: 'var(--bg-primary)' }}>
       {showHeader && <Header />}
-      <main className={`w-full flex-1 overflow-hidden ${showHeader ? "min-h-[95%] md:min-h-[94%]" : "min-h-full"} bg-[#1a1a1a] text-white`}>
+      <main
+        className={`w-full flex-1 overflow-hidden ${showHeader ? "min-h-[95%] md:min-h-[94%]" : "min-h-full"}`}
+        style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}
+      >
         <Outlet />
       </main>
     </div>

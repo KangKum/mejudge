@@ -2,12 +2,22 @@ const TermsForm = ({ setShowTermsForm }: { setShowTermsForm: React.Dispatch<Reac
   return (
     <div className="overlay" onClick={() => setShowTermsForm(false)}>
       <div
-        className="bg-black border-4 w-[90%] h-[700px] md:w-[45%] md:h-[700px] mx-auto mt-20 p-4 rounded-lg overflow-y-auto"
+        className="w-[90%] h-[700px] md:w-[45%] md:h-[700px] mx-auto mt-20 p-4 rounded-xl overflow-y-auto overscroll-contain touch-pan-y"
+        style={{
+          backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid var(--border-primary)',
+          color: 'var(--text-primary)'
+        }}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <h2 className="text-2xl font-bold mb-4 w-full text-center">이용약관</h2>
+        <h2
+          className="text-2xl font-bold mb-4 w-full text-center"
+          style={{ color: 'var(--text-emphasis)' }}
+        >
+          이용약관
+        </h2>
         <div>본 약관은 MeJudge에서 제공하는 웹서비스의 이용과 관련하여 서비스와 이용자 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</div>
         <div className="text-lg mt-4">제1조 (목적)</div>
         <div className="ml-5">본 약관은 회원이 서비스를 이용함에 있어 필요한 기본적인 사항을 규정합니다.</div>
@@ -46,7 +56,7 @@ const TermsForm = ({ setShowTermsForm }: { setShowTermsForm: React.Dispatch<Reac
         <div className="text-lg mt-4">제8조 (준거법 및 관할)</div>
         <div className="ml-5">본 약관은 대한민국 법령을 따르며, 서비스와 이용자 간 분쟁은 대한민국 법원을 관할로 합니다.</div>
         <div className="w-full flex justify-center h-10 mt-8">
-          <button className="bg-gray-500 px-4 rounded" onClick={() => setShowTermsForm(false)}>
+          <button className="btn-secondary px-4" onClick={() => setShowTermsForm(false)}>
             닫기
           </button>
         </div>

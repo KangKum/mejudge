@@ -30,11 +30,20 @@ const Master = () => {
   return showCaseForm ? (
     <CaseForm setShowCaseForm={setShowCaseForm} />
   ) : (
-    <div className="w-full flex flex-col justify-center items-center">
+    <div className="w-full flex flex-col justify-center items-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="blankSpace w-full h-20"></div>
       <div className="w-[80%] mx-auto md:w-[80%] flex md:flex-row flex-col justify-center gap-10">
         <button
-          className="w-[315px] h-[200px] md:min-w-[400px] md:h-[444px] md:text-4xl bg-gray-600 hover:cursor-pointer hover:font-bold"
+          className="card w-[315px] h-[200px] md:min-w-[400px] md:h-[444px] md:text-4xl cursor-pointer transition-all duration-150"
+          style={{ color: 'var(--text-primary)' }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.fontWeight = 'bold';
+            e.currentTarget.style.color = 'var(--text-emphasis)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.fontWeight = 'normal';
+            e.currentTarget.style.color = 'var(--text-primary)';
+          }}
           onClick={() => adminValidate()}
         >
           사건등록

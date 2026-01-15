@@ -193,41 +193,71 @@ const Info = () => {
     }
   }, [userId]);
   return (
-    <div className="flex flex-col h-full items-center cursor-default">
+    <div className="flex flex-col h-full items-center cursor-default" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="blankSpace w-full h-20 md:h-45"></div>
       <div className="flex flex-col items-center w-[45%] md:w-[35%]">
         <div className="w-full md:h-30 flex flex-col md:flex-row md:justify-between gap-3">
-          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 rounded-lg">
+          <div className="card w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl">
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
-              <MdGavel size={30} />
+              <MdGavel size={30} style={{ color: 'var(--text-secondary)' }} />
             </div>
-            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{judgeCases}건</div>
+            <div
+              className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center"
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}
+            >
+              {judgeCases}건
+            </div>
           </div>
 
-          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 rounded-lg">
+          <div className="card w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl">
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
-              <FaCommentAlt size={28} />
+              <FaCommentAlt size={28} style={{ color: 'var(--text-secondary)' }} />
             </div>
-            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{commentCount}개</div>
+            <div
+              className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center"
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}
+            >
+              {commentCount}개
+            </div>
           </div>
 
-          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 rounded-lg">
+          <div className="card w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl">
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
-              <FaThumbsUp size={28} />
+              <FaThumbsUp size={28} style={{ color: 'var(--text-secondary)' }} />
             </div>
-            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{totalLikes}개</div>
+            <div
+              className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center"
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}
+            >
+              {totalLikes}개
+            </div>
           </div>
 
-          <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 rounded-lg">
+          <div className="card w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl">
             <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">
-              <FaThumbsDown size={28} />
+              <FaThumbsDown size={28} style={{ color: 'var(--text-secondary)' }} />
             </div>
-            <div className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center">{totalDislikes}개</div>
+            <div
+              className="md:w-full w-[50%] md:h-[50%] h-full flex justify-center items-center"
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}
+            >
+              {totalDislikes}개
+            </div>
           </div>
 
           {isAdmin && (
-            <div className="w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl bg-gray-500 rounded-lg cursor-pointer">
-              <div className="md:w-full w-full h-full flex justify-center items-center hover:font-bold" onClick={() => navigate("/master20251208")}>
+            <div className="card w-full md:w-[23%] h-[70px] md:h-full flex flex-row md:flex-col text-xl cursor-pointer">
+              <div
+                className="md:w-full w-full h-full flex justify-center items-center transition-all duration-150"
+                style={{ color: 'var(--accent-primary)' }}
+                onClick={() => navigate("/master20251208")}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.fontWeight = 'bold';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.fontWeight = 'normal';
+                }}
+              >
                 사건등록
               </div>
             </div>
@@ -236,7 +266,7 @@ const Info = () => {
       </div>
       <div className="blankSpace w-full h-15 md:h-40"></div>
       <button
-        className="bg-gray-500 p-2 rounded"
+        className="btn-primary px-6 py-2"
         onClick={() => {
           localStorage.removeItem("MJKRtoken");
           localStorage.removeItem("MJKRnickname");
@@ -246,38 +276,81 @@ const Info = () => {
         로그아웃
       </button>
       <div className="blankSpace w-full h-10"></div>
-      <button className="text-sm text-gray-400" onClick={() => setShowPasswordChange(!showPasswordChange)}>
+      <button
+        className="text-sm transition-all duration-150"
+        style={{ color: 'var(--text-tertiary)' }}
+        onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-tertiary)'}
+        onClick={() => setShowPasswordChange(!showPasswordChange)}
+      >
         비밀번호 변경
       </button>
       {showPasswordChange && (
-        <div className="flex flex-col items-center mt-4">
+        <div className="flex flex-col items-center mt-4 gap-2">
           <input
             type="password"
             placeholder="기존 비밀번호"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
-            className="border p-2 mb-2"
+            className="p-3 mb-2 rounded-lg w-[250px] transition-all duration-150"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--border-primary)'
+            }}
+            onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+            onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
           />
-          <input type="password" placeholder="새 비밀번호" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="border p-2 mb-2" />
-          <button onClick={async () => changePW()}>변경</button>
+          <input
+            type="password"
+            placeholder="새 비밀번호"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="p-3 mb-2 rounded-lg w-[250px] transition-all duration-150"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--border-primary)'
+            }}
+            onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+            onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
+          />
+          <button className="btn-secondary w-[250px]" onClick={async () => changePW()}>
+            변경
+          </button>
         </div>
       )}
       <div className="blankSpace w-full h-5"></div>
       {!showPasswordChange && (
-        <button className="text-sm text-gray-400" onClick={() => setShowConfirmDelete(!showConfirmDelete)}>
+        <button
+          className="text-sm transition-all duration-150"
+          style={{ color: 'var(--text-tertiary)' }}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-tertiary)'}
+          onClick={() => setShowConfirmDelete(!showConfirmDelete)}
+        >
           계정탈퇴
         </button>
       )}
       {showConfirmDelete && (
-        <div className="flex flex-col items-center mt-4">
+        <div className="flex flex-col items-center mt-4 gap-2">
           <input
             type="password"
             placeholder="비밀번호"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="border p-2 mb-2"
+            className="p-3 mb-2 rounded-lg w-[250px] transition-all duration-150"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--border-primary)'
+            }}
+            onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+            onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
           />
-          <button onClick={async () => deleteAccount()}>탈퇴</button>
+          <button className="btn-secondary w-[250px]" onClick={async () => deleteAccount()}>
+            탈퇴
+          </button>
         </div>
       )}
     </div>

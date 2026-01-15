@@ -8,7 +8,7 @@ const Main = () => {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col cursor-default">
+    <div className="w-full h-full flex flex-col cursor-default" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <Helmet>
         <title>실제 판결문 사건 목록 | 나의 판결</title>
         <meta

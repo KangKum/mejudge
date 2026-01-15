@@ -43,11 +43,15 @@ const MasterForm = ({
       }}
     >
       <div
-        className="flex flex-col justify-center items-center gap-2 bg-green-200 w-[300px] h-[200px] border-4 rounded mx-auto mt-70"
+        className="flex flex-col justify-center items-center gap-2 w-[300px] h-[200px] rounded-xl mx-auto mt-70"
+        style={{
+          backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid var(--border-primary)'
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="w-[90%] h-[40%] border rounded-xl active:scale-98"
+          className="btn-secondary w-[90%] h-[40%] rounded-xl active:scale-98"
           onClick={async () => {
             const res = await fetch(`${apiUrl}/api/change-nickname`, {
               method: "PUT",
@@ -70,10 +74,10 @@ const MasterForm = ({
             }
           }}
         >
-          닉네임 <span className="text-blue-600">{comment?.userNickname}</span> 변경
+          닉네임 <span style={{ color: 'var(--accent-primary)' }}>{comment?.userNickname}</span> 변경
         </button>
-        <button className="w-[90%] h-[40%] border rounded-xl active:scale-98" onClick={() => deleteComment()}>
-          댓글 <span className="text-blue-600">{comment?.comment.slice(0, 5) + "..."}</span> 삭제
+        <button className="btn-secondary w-[90%] h-[40%] rounded-xl active:scale-98" onClick={() => deleteComment()}>
+          댓글 <span style={{ color: 'var(--accent-primary)' }}>{comment?.comment.slice(0, 5) + "..."}</span> 삭제
         </button>
       </div>
     </div>

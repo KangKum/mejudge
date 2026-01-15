@@ -2,12 +2,22 @@ const PrivacyForm = ({ setShowPrivacyForm }: { setShowPrivacyForm: React.Dispatc
   return (
     <div className="overlay" onClick={() => setShowPrivacyForm(false)}>
       <div
-        className="bg-black border-4 w-[90%] h-[700px] md:w-[45%] md:h-[700px] mx-auto mt-20 p-4 rounded-lg overflow-y-auto"
+        className="w-[90%] h-[700px] md:w-[45%] md:h-[700px] mx-auto mt-20 p-4 rounded-xl overflow-y-auto overscroll-contain touch-pan-y"
+        style={{
+          backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid var(--border-primary)',
+          color: 'var(--text-primary)'
+        }}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <h2 className="text-2xl font-bold mb-4 w-full text-center">개인정보처리방침</h2>
+        <h2
+          className="text-2xl font-bold mb-4 w-full text-center"
+          style={{ color: 'var(--text-emphasis)' }}
+        >
+          개인정보처리방침
+        </h2>
         <div className="text-lg mt-4">1. 수집하는 개인정보 항목</div>
         <div className="pl-5">
           <li className="ml-5">아이디</li>
@@ -47,7 +57,7 @@ const PrivacyForm = ({ setShowPrivacyForm }: { setShowPrivacyForm: React.Dispatc
         <div className="text-lg mt-4">8. 개인정보처리방침 변경</div>
         <div className="pl-5">본 개인정보처리방침은 법령 또는 서비스 변경에 따라 수정될 수 있으며, 변경 시 서비스 내 공지를 통해 안내합니다.</div>
         <div className="w-full flex justify-center h-10 mt-8">
-          <button className="bg-gray-500 px-4 rounded" onClick={() => setShowPrivacyForm(false)}>
+          <button className="btn-secondary px-4" onClick={() => setShowPrivacyForm(false)}>
             닫기
           </button>
         </div>

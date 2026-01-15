@@ -88,18 +88,32 @@ const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.S
   };
 
   return (
-    <div className="overlay overflow-y-auto" onClick={() => confirm("사건 등록을 취소하시겠습니까?") && setShowCaseForm(false)}>
+    <div className="overlay overflow-y-auto overscroll-contain touch-pan-y" onClick={() => confirm("사건 등록을 취소하시겠습니까?") && setShowCaseForm(false)}>
       <Helmet>
         <meta name="robots" content="noindex,nofollow" />
       </Helmet>
-      <div className="w-[380px] md:w-[800px] mx-auto mt-20 border-white bg-black" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="w-[380px] md:w-[800px] mx-auto mt-20 p-4 rounded-xl"
+        style={{
+          backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid var(--border-primary)'
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="webtoonPart"></div>
         <input
           type="text"
           value={title}
           placeholder="제목"
           onChange={(e) => setTitle(e.target.value)}
-          className="bg-white w-full my-1 h-10 text-black text-center"
+          className="w-full my-1 h-10 text-center rounded-lg transition-all duration-150"
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
+          onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+          onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
         />
         <input
           id="imageInput"
@@ -117,36 +131,61 @@ const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.S
 
         <label
           htmlFor="imageInput"
-          className="bg-white w-full my-1 h-10 text-black cursor-pointer
-             flex items-center justify-center"
+          className="w-full my-1 h-10 cursor-pointer flex items-center justify-center rounded-lg transition-all duration-150"
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
         >
           이미지 선택
         </label>
-        {imagePreview && <img src={imagePreview} alt="Preview" className="w-full my-2" />}
+        {imagePreview && <img src={imagePreview} alt="Preview" className="w-full my-2 rounded-lg" style={{ border: '1px solid var(--border-primary)' }} />}
         <input
           type="text"
           value={result}
           placeholder="실제 선고 결과  ex) 징역 2년 6개월 / 벌금 500만원"
           onChange={(e) => setResult(e.target.value)}
-          className="bg-white w-full my-1 h-10 text-black text-center"
+          className="w-full my-1 h-10 text-center rounded-lg transition-all duration-150"
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
+          onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+          onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
         />
         <input
           type="text"
           value={result2}
           placeholder="집행유예 결과  ex) 3년 || 입력X"
           onChange={(e) => setResult2(e.target.value)}
-          className="bg-white w-full my-1 h-10 text-black text-center"
+          className="w-full my-1 h-10 text-center rounded-lg transition-all duration-150"
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
+          onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+          onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
         />
         <textarea
-          className="textPart w-full min-h-[700px] bg-gray-100 text-black text-center"
+          className="textPart w-full min-h-[700px] text-center rounded-lg transition-all duration-150"
           placeholder="사건 내용"
           spellCheck={false}
           value={text}
           onChange={(e) => setText(e.target.value)}
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
+          onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+          onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
         ></textarea>
         <button
           disabled={isRegistering}
-          className={`w-full py-1 mb-2 ${isRegistering ? "bg-gray-400 cursor-not-allowed" : "hover:bg-gray-500"}`}
+          className={`btn-primary w-full py-2 mb-2 ${isRegistering ? "opacity-50 cursor-not-allowed" : ""}`}
           onClick={registerCase}
         >
           {isRegistering ? "등록 중..." : "등록"}

@@ -1,4 +1,45 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* CSS 변수 정의 */
+:root {
+  /* 배경 색상 */
+  --bg-primary: #0f0e0a;
+  --bg-secondary: #1a1816;
+  --bg-tertiary: #242220;
+  --bg-header: #0a0908;
+
+  /* 텍스트 색상 */
+  --text-primary: #e5e5e5;
+  --text-secondary: #a8a8a8;
+  --text-tertiary: #787878;
+  --text-emphasis: #ffffff;
+
+  /* 강조 색상 (파란 톤) */
+  --accent-primary: #3b82f6;
+  --accent-secondary: #2563eb;
+  --accent-tertiary: #1d4ed8;
+  --accent-subtle: #1e3a8a;
+
+  /* 상태 색상 */
+  --status-success: #22c55e;
+  --status-warning: #eab308;
+  --status-danger: #ef4444;
+  --status-info: #3b82f6;
+
+  /* 구분선 */
+  --border-primary: #2a2826;
+  --border-secondary: #3a3836;
+  --border-subtle: rgba(255, 255, 255, 0.05);
+
+  /* 오버레이 */
+  --overlay-bg: rgba(0, 0, 0, 0.75);
+
+  /* 폰트 */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
 
 html,
 body,
@@ -6,6 +47,11 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: var(--font-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html,
@@ -19,6 +65,8 @@ body,
 button {
   outline: none;
   cursor: pointer;
+  font-family: var(--font-primary);
+  transition: all 0.15s ease;
 }
 
 textarea {
@@ -27,6 +75,21 @@ textarea {
   border: 0;
   padding: 0;
   margin: 0;
+  font-family: var(--font-primary);
+  background-color: transparent;
+  color: var(--text-primary);
+}
+
+input {
+  font-family: var(--font-primary);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--accent-primary);
 }
 
 .overlay {
@@ -35,23 +98,112 @@ textarea {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--overlay-bg);
+  backdrop-filter: blur(4px);
   display: flex;
   z-index: 1000;
+  overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 .sentenceBtn {
   width: 60px;
-  border: 1px solid white;
+  border: 1px solid var(--border-secondary);
   cursor: pointer;
-}
-.sentenceBtn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+  color: var(--text-primary);
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
 }
 
-/* Webkit (크롬, 사파리, 엣지) */
+.sentenceBtn:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--accent-primary);
+}
+
+/* 스크롤바 스타일링 (숨김 유지) */
 ::-webkit-scrollbar {
   display: none;
   width: 0 !important;
   background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* 선택 영역 스타일 */
+::selection {
+  background-color: var(--accent-primary);
+  color: var(--text-emphasis);
+}
+
+/* 카드 스타일 (공통) */
+.card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 0.75rem;
+  transition: all 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--border-secondary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 버튼 스타일 (공통) */
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: var(--text-emphasis);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:active {
+  background-color: var(--accent-tertiary);
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-secondary);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-weight: 400;
+  transition: all 0.15s ease;
+}
+
+.btn-ghost:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
 }

@@ -402,7 +402,7 @@ const CasePage = () => {
   }, [caseId]);
 
   return (
-    <div className="w-full h-dvh">
+    <div className="w-full h-dvh" style={{ backgroundColor: "var(--bg-primary)" }}>
       <Helmet>
         <title>{caseData ? `${caseData.caseTitle} | 나의 판결` : "사건 상세 | 나의 판결"}</title>
         <meta
@@ -418,12 +418,26 @@ const CasePage = () => {
 
       <div ref={scrollRef} className="w-[90%] md:w-[95%] mx-auto h-full overflow-y-auto overscroll-contain touch-pan-y">
         <div className="w-full md:w-[50%] mx-auto h-8 mb-2 flex justify-between items-center mt-4">
-          <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "active:font-bold"}`} onClick={async () => pastCase()}>
+          <button
+            className={`text-sm md:text-base transition-all duration-150 ${caseNumber === 1 ? "" : "hover:font-semibold"}`}
+            style={{
+              color: caseNumber === 1 ? "var(--text-tertiary)" : "var(--text-secondary)",
+              cursor: caseNumber === 1 ? "not-allowed" : "pointer",
+            }}
+            onMouseEnter={(e) => {
+              if (caseNumber !== 1) e.currentTarget.style.color = "var(--text-primary)";
+            }}
+            onMouseLeave={(e) => {
+              if (caseNumber !== 1) e.currentTarget.style.color = "var(--text-secondary)";
+            }}
+            onClick={async () => pastCase()}
+          >
             이전 사건
           </button>
           {isAdmin && (
             <button
-              className="text-sm md:text-base font-bold text-red-600 flex justify-center items-center"
+              className="text-sm md:text-base font-bold flex justify-center items-center"
+              style={{ color: "var(--status-danger)" }}
               onClick={() => {
                 confirm("정말로 사건을 삭제하시겠습니까? 삭제된 사건은 복구할 수 없습니다.") && deleteCase();
               }}
@@ -431,28 +445,70 @@ const CasePage = () => {
               DELETE
             </button>
           )}
-          <button className={`text-sm md:text-base ${caseNumber === latestCaseNumber ? "text-gray-500" : "active:font-bold"}`} onClick={async () => nextCase()}>
+          <button
+            className={`text-sm md:text-base transition-all duration-150 ${caseNumber === latestCaseNumber ? "" : "hover:font-semibold"}`}
+            style={{
+              color: caseNumber === latestCaseNumber ? "var(--text-tertiary)" : "var(--text-secondary)",
+              cursor: caseNumber === latestCaseNumber ? "not-allowed" : "pointer",
+            }}
+            onMouseEnter={(e) => {
+              if (caseNumber !== latestCaseNumber) e.currentTarget.style.color = "var(--text-primary)";
+            }}
+            onMouseLeave={(e) => {
+              if (caseNumber !== latestCaseNumber) e.currentTarget.style.color = "var(--text-secondary)";
+            }}
+            onClick={async () => nextCase()}
+          >
             다음 사건
           </button>
         </div>
-        <div className="titlePart w-full md:w-[50%] mx-auto h-8 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl cursor-default">
+        <div
+          className="titlePart w-full md:w-[50%] mx-auto h-8 flex justify-center items-center font-bold px-2 py-4 mb-2 text-xl cursor-default"
+          style={{ fontFamily: "var(--font-heading)", color: "var(--text-emphasis)" }}
+        >
           {caseData?.caseTitle}
         </div>
-        <div className="webtoonPart w-full md:w-[50%] mx-auto">
-          {caseData?.caseNumber && <img src={`${imgUrl}/cases/${caseData.caseNumber}/case${caseData.caseNumber}_1.webp`} alt="case image" />}
+        <div className="webtoonPart w-full md:w-[50%] mx-auto rounded-lg overflow-hidden">
+          {caseData?.caseNumber && (
+            <img
+              src={`${imgUrl}/cases/${caseData.caseNumber}/case${caseData.caseNumber}_1.webp`}
+              alt="case image"
+              style={{ border: "1px solid var(--border-primary)" }}
+            />
+          )}
         </div>
         <div className="blankSpace h-4"></div>
-        <div className="textPart w-full md:w-[50%] mx-auto whitespace-pre-line text-lg">{caseData?.caseText}</div>
+        <div
+          className="textPart w-full md:w-[50%] mx-auto whitespace-pre-line text-lg leading-relaxed"
+          style={{ color: "var(--text-primary)", lineHeight: "1.75" }}
+        >
+          {caseData?.caseText}
+        </div>
         <div className="commentPart w-full md:w-[50%] mx-auto mt-6">
-          <div className="commentUpPart h-8 text-lg my-2">댓글({commentCount})</div>
-          <div className="commentMiddlePart flex flex-col items-center p-2 border mb-4">
-            <div className="idPart w-full mb-1">{userNickname}</div>
+          <div className="commentUpPart h-8 text-lg my-2 font-semibold" style={{ color: "var(--text-emphasis)" }}>
+            댓글({commentCount})
+          </div>
+          <div
+            className="commentMiddlePart flex flex-col items-center p-2 mb-4 rounded-lg"
+            style={{
+              border: "1px solid var(--border-primary)",
+              backgroundColor: "var(--bg-secondary)",
+            }}
+          >
+            <div className="idPart w-full mb-1 text-sm font-medium" style={{ color: "var(--text-secondary)" }}>
+              {userNickname}
+            </div>
             <textarea
-              className={`textPart w-full h-24 mx-auto ${userId ? "" : "cursor-default"}`}
+              className={`textPart w-full h-24 mx-auto p-2 rounded ${userId ? "" : "cursor-default"}`}
               spellCheck={false}
               placeholder={`${userId ? "댓글을 입력하세요" : "로그인이 필요합니다."}`}
               maxLength={300}
               value={comment}
+              style={{
+                backgroundColor: "var(--bg-tertiary)",
+                color: "var(--text-primary)",
+                border: "1px solid var(--border-primary)",
+              }}
               onClick={() => {
                 if (!userId) {
                   alert("로그인이 필요합니다.");
@@ -462,14 +518,14 @@ const CasePage = () => {
               onChange={(e) => setComment(e.target.value)}
             ></textarea>
             <div className="buttonPart w-full flex justify-end mt-2">
-              <button className="bg-gray-500 py-1 px-2" onClick={async () => makeComment()}>
+              <button className="btn-primary py-1.5 px-4 text-sm" onClick={async () => makeComment()}>
                 전송
               </button>
             </div>
           </div>
           <div className="commentDownPart">
             {comments.map((comment, index) => (
-              <div key={index} className="commentItem flex flex-col border-b px-2 mt-2 pb-2">
+              <div key={index} className="commentItem flex flex-col px-2 mt-2 pb-2 rounded-lg" style={{ borderBottom: "1px solid var(--border-primary)" }}>
                 <div className="commentUser text-sm md:text-base flex">
                   <span className="flex justify-center items-center">
                     {index === 0 && comment.likes.length > 2 ? (
@@ -480,12 +536,17 @@ const CasePage = () => {
                       <FaMedal color="#CD7F32" size={12} />
                     ) : null}
                   </span>
-                  <span className="mr-3 font-bold">{comment.userNickname}</span>
-                  <span className="text-xs md:text-sm flex items-center text-gray-500">{formattedDate(comment.createdAt)}</span>
+                  <span className="mr-3 font-semibold" style={{ color: "var(--text-primary)" }}>
+                    {comment.userNickname}
+                  </span>
+                  <span className="text-xs md:text-sm flex items-center" style={{ color: "var(--text-tertiary)" }}>
+                    {formattedDate(comment.createdAt)}
+                  </span>
                   {isAdmin && (
                     <div>
                       <button
-                        className="ml-3 text-red-600 border"
+                        className="ml-3 border"
+                        style={{ color: "var(--status-danger)" }}
                         onClick={() => {
                           confirm("해당 유저의 닉네임을 변경하시겠습니까?") && changeNickname({ comment });
                         }}
@@ -493,7 +554,8 @@ const CasePage = () => {
                         닉변
                       </button>
                       <button
-                        className="ml-3 text-red-600 border"
+                        className="ml-3 border"
+                        style={{ color: "var(--status-danger)" }}
                         onClick={() => {
                           confirm("정말로 댓글을 삭제하시겠습니까? 삭제된 댓글은 복구할 수 없습니다.") && deleteComment({ comment });
                         }}
@@ -503,12 +565,17 @@ const CasePage = () => {
                     </div>
                   )}
                 </div>
-                <div className="commentText text-sm md:text-base">{comment.comment}</div>
+                <div className="commentText text-sm md:text-base mt-1" style={{ color: "var(--text-primary)" }}>
+                  {comment.comment}
+                </div>
                 <div className="flex justify-end gap-2 mt-3">
                   <button
-                    className={`border p-1 flex justify-center items-center ${
-                      userId && comment.likes && comment.likes.includes(userId) ? "text-blue-600" : ""
-                    }`}
+                    className={`p-1 flex justify-center items-center rounded transition-all duration-150`}
+                    style={{
+                      border: "1px solid var(--border-primary)",
+                      backgroundColor: userId && comment.likes && comment.likes.includes(userId) ? "var(--accent-subtle)" : "transparent",
+                      color: userId && comment.likes && comment.likes.includes(userId) ? "var(--accent-primary)" : "var(--text-secondary)",
+                    }}
                     onClick={async () => makeLike({ comment })}
                   >
                     <span className="pl-1">
@@ -517,9 +584,12 @@ const CasePage = () => {
                     <span className="px-1">{comment.likes ? comment.likes.length : 0}</span>
                   </button>
                   <button
-                    className={`border p-1 flex justify-center items-center ${
-                      userId && comment.dislikes && comment.dislikes.includes(userId) ? "text-blue-600" : ""
-                    }`}
+                    className={`p-1 flex justify-center items-center rounded transition-all duration-150`}
+                    style={{
+                      border: "1px solid var(--border-primary)",
+                      backgroundColor: userId && comment.dislikes && comment.dislikes.includes(userId) ? "var(--accent-subtle)" : "transparent",
+                      color: userId && comment.dislikes && comment.dislikes.includes(userId) ? "var(--accent-primary)" : "var(--text-secondary)",
+                    }}
                     onClick={async () => makeDislike({ comment })}
                   >
                     <span className="pl-1">
@@ -531,7 +601,22 @@ const CasePage = () => {
               </div>
             ))}
             <button
-              className={`my-2 p-2 flex justify-center items-center gap-2 w-[60%] mx-auto mb-10 ${commentCount <= commentLimit ? "hidden" : ""}`}
+              className={`my-2 p-2 flex justify-center items-center gap-2 w-[60%] mx-auto mb-10 rounded-lg transition-all duration-150 ${
+                commentCount <= commentLimit ? "hidden" : ""
+              }`}
+              style={{
+                backgroundColor: "transparent",
+                color: "var(--text-secondary)",
+                border: "1px solid var(--border-primary)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "var(--bg-tertiary)";
+                e.currentTarget.style.color = "var(--text-primary)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.color = "var(--text-secondary)";
+              }}
               onClick={() => setCommentLimit((prev) => prev + 10)}
             >
               <span>
@@ -542,147 +627,160 @@ const CasePage = () => {
           </div>
         </div>
         <div className={`footerPart w-[90%] md:w-[50%] mx-auto pb-2 flex flex-col mt-2 ${isSentenced ? "hidden" : ""}`}>
-          <div className="w-[60%] md:w-[50%] mx-auto min-h-8 md:min-h-10 flex justify-center mb-2">
-            <button className={`flex-1 min-h-full rounded-l ${mode === 0 ? "bg-blue-600" : "bg-gray-400"}`} onClick={() => setMode(0)}>
+          <div className="w-[60%] md:w-[50%] mx-auto min-h-8 md:min-h-10 flex justify-center mb-2 rounded-lg overflow-hidden">
+            <button
+              className={`flex-1 min-h-full font-medium transition-all duration-150`}
+              style={{
+                backgroundColor: mode === 0 ? "var(--accent-primary)" : "var(--bg-secondary)",
+                color: mode === 0 ? "var(--text-emphasis)" : "var(--text-secondary)",
+                borderTopLeftRadius: "0.5rem",
+                borderBottomLeftRadius: "0.5rem",
+              }}
+              onClick={() => setMode(0)}
+            >
               징역형
             </button>
-            <button className={`flex-1 min-h-full rounded-r ${mode === 1 ? "bg-blue-600" : "bg-gray-400"}`} onClick={() => setMode(1)}>
+            <button
+              className={`flex-1 min-h-full font-medium transition-all duration-150`}
+              style={{
+                backgroundColor: mode === 1 ? "var(--accent-primary)" : "var(--bg-secondary)",
+                color: mode === 1 ? "var(--text-emphasis)" : "var(--text-secondary)",
+                borderTopRightRadius: "0.5rem",
+                borderBottomRightRadius: "0.5rem",
+              }}
+              onClick={() => setMode(1)}
+            >
               벌금형
             </button>
           </div>
           {mode === 0 ? (
             <div className="flex flex-col h-40 md:h-44">
-              <div className="w-full h-12 md:h-16 flex justify-center items-center text-xl md:text-2xl font-bold">
+              <div
+                className="w-full h-12 md:h-16 flex justify-center items-center text-xl md:text-2xl font-bold"
+                style={{ fontFamily: "var(--font-heading)", color: "var(--text-emphasis)" }}
+              >
                 {year === 50 && month === 11 ? "무기징역" : year > 0 ? "징역" + " " + year + "년" + " " + month + "개월" : "징역" + " " + month + "개월"}
               </div>
               <div className="w-[95%] h-18 md:h-18 flex flex-col mx-auto gap-3 md:gap-5 justify-center">
-                <input type="range" min={Ymin} max={Ymax} value={year} onChange={(e) => setYear(Number(e.target.value))} />
-                <input type="range" min={Mmin} max={Mmax} value={month} onChange={(e) => setMonth(Number(e.target.value))} />
+                <input
+                  type="range"
+                  min={Ymin}
+                  max={Ymax}
+                  value={year}
+                  onChange={(e) => setYear(Number(e.target.value))}
+                  style={{ accentColor: "var(--accent-primary)" }}
+                />
+                <input
+                  type="range"
+                  min={Mmin}
+                  max={Mmax}
+                  value={month}
+                  onChange={(e) => setMonth(Number(e.target.value))}
+                  style={{ accentColor: "var(--accent-primary)" }}
+                />
               </div>
               <div
-                className={`h-10 md:h-10 mt-4 w-[95%] mx-auto flex flex-row my-auto ${
-                  (year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4 ? "text-gray-500" : ""
-                }`}
+                className={`h-10 md:h-10 mt-4 w-full md:w-[95%] mx-auto flex flex-row my-auto`}
+                style={{
+                  color: (year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4 ? "var(--text-tertiary)" : "var(--text-primary)",
+                }}
               >
-                <div className="w-[25%] h-full flex justify-center items-center text-base md:text-lg">집행유예</div>
-                <div className="w-[75%] h-full flex justify-center items-center text-sm md:text-base">
-                  <div className="w-full h-[95%] flex mx-auto gap-2">
-                    <button
-                      disabled={isSentenced || (year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4}
-                      className={`border rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center ${
-                        isSentenced && suspend === 1 ? "bg-gray-300" : suspend === 1 ? "bg-blue-600" : ""
-                      }`}
-                      onClick={() => {
-                        if (suspend === 1) {
-                          setSuspend(0);
-                        } else {
-                          setSuspend(1);
-                        }
-                      }}
-                    >
-                      1년
-                    </button>
-                    <button
-                      disabled={isSentenced || (year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4}
-                      className={`border rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center ${
-                        isSentenced && suspend === 2 ? "bg-gray-300" : suspend === 2 ? "bg-blue-600" : ""
-                      }`}
-                      onClick={() => {
-                        if (suspend === 2) {
-                          setSuspend(0);
-                        } else {
-                          setSuspend(2);
-                        }
-                      }}
-                    >
-                      2년
-                    </button>
-                    <button
-                      disabled={isSentenced || (year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4}
-                      className={`border rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center ${
-                        isSentenced && suspend === 3 ? "bg-gray-300" : suspend === 3 ? "bg-blue-600" : ""
-                      }`}
-                      onClick={() => {
-                        if (suspend === 3) {
-                          setSuspend(0);
-                        } else {
-                          setSuspend(3);
-                        }
-                      }}
-                    >
-                      3년
-                    </button>
-                    <button
-                      disabled={isSentenced || (year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4}
-                      className={`border rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center ${
-                        isSentenced && suspend === 4 ? "bg-gray-300" : suspend === 4 ? "bg-blue-600" : ""
-                      }`}
-                      onClick={() => {
-                        if (suspend === 4) {
-                          setSuspend(0);
-                        } else {
-                          setSuspend(4);
-                        }
-                      }}
-                    >
-                      4년
-                    </button>
-                    <button
-                      disabled={isSentenced || (year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4}
-                      className={`border rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center ${
-                        isSentenced && suspend === 5 ? "bg-gray-300" : suspend === 5 ? "bg-blue-600" : ""
-                      }`}
-                      onClick={() => {
-                        if (suspend === 5) {
-                          setSuspend(0);
-                        } else {
-                          setSuspend(5);
-                        }
-                      }}
-                    >
-                      5년
-                    </button>
+                <div className="w-[23%] h-full flex md:justify-center items-center text-sm md:text-lg" style={{ whiteSpace: "nowrap" }}>
+                  집행유예
+                </div>
+                <div className="w-[77%] h-full flex justify-center items-center text-sm md:text-base">
+                  <div className="w-full h-[95%] flex justify-center mx-auto gap-2">
+                    {[1, 2, 3, 4, 5].map((years) => (
+                      <button
+                        key={years}
+                        disabled={isSentenced || (year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4}
+                        className={`btn-secondary rounded p-1 w-[20%] h-[80%] md:h-full my-auto flex justify-center items-center`}
+                        style={{
+                          backgroundColor: suspend === years ? "var(--accent-primary)" : "var(--bg-secondary)",
+                          color: suspend === years ? "var(--text-emphasis)" : "var(--text-primary)",
+                          opacity: (year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4 ? 0.5 : 1,
+                          whiteSpace: "nowrap",
+                        }}
+                        onClick={() => {
+                          if (suspend === years) {
+                            setSuspend(0);
+                          } else {
+                            setSuspend(years);
+                          }
+                        }}
+                      >
+                        {years}년
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
           ) : (
             <div className="flex flex-col items-center h-40 md:h-44">
-              <div className="w-full h-12 md:h-16 flex justify-center items-center text-xl md:text-2xl font-bold">벌금 {(fine ?? 0).toLocaleString()}원</div>
-              <div className="w-[98%] h-14 md:h-14 flex justify-center items-center gap-2 mb-1">
-                <button className="border flex-1 text-xs md:text-base h-10 rounded" onClick={() => setFine((prev) => prev + 100000000)}>
+              <div
+                className="w-full h-12 md:h-16 flex justify-center items-center text-xl md:text-2xl font-bold"
+                style={{ fontFamily: "var(--font-heading)", color: "var(--text-emphasis)" }}
+              >
+                벌금 {(fine ?? 0).toLocaleString()}원
+              </div>
+              <div className="w-[98%] h-14 md:h-14 flex justify-center items-center gap-1 md:gap-2 mb-1">
+                <button
+                  className="btn-secondary flex-1 text-xs md:text-base h-10 rounded"
+                  style={{ whiteSpace: "nowrap", minWidth: "0" }}
+                  onClick={() => setFine((prev) => prev + 100000000)}
+                >
                   +1억
                 </button>
-                <button className="border flex-1 text-xs md:text-base h-10 rounded" onClick={() => setFine((prev) => prev + 10000000)}>
+                <button
+                  className="btn-secondary flex-1 text-xs md:text-base h-10 rounded"
+                  style={{ whiteSpace: "nowrap", minWidth: "0" }}
+                  onClick={() => setFine((prev) => prev + 10000000)}
+                >
                   +1000만원
                 </button>
-                <button className="border flex-1 text-xs md:text-base h-10 rounded" onClick={() => setFine((prev) => prev + 1000000)}>
+                <button
+                  className="btn-secondary flex-1 text-xs md:text-base h-10 rounded"
+                  style={{ whiteSpace: "nowrap", minWidth: "0" }}
+                  onClick={() => setFine((prev) => prev + 1000000)}
+                >
                   +100만원
                 </button>
-                <button className="border flex-1 text-xs md:text-base h-10 rounded" onClick={() => setFine((prev) => prev + 100000)}>
+                <button
+                  className="btn-secondary flex-1 text-xs md:text-base h-10 rounded"
+                  style={{ whiteSpace: "nowrap", minWidth: "0" }}
+                  onClick={() => setFine((prev) => prev + 100000)}
+                >
                   +10만원
                 </button>
               </div>
-              <div className="w-[98%] h-14 md:h-14 flex justify-center items-center gap-2">
+              <div className="w-[98%] h-14 md:h-14 flex justify-center items-center gap-1 md:gap-2">
                 <button
-                  className="border flex-1 text-xs md:text-base h-10 rounded"
+                  className="btn-secondary flex-1 text-xs md:text-base h-10 rounded"
+                  style={{ whiteSpace: "nowrap", minWidth: "0" }}
                   onClick={() => setFine((prev) => (prev - 100000000 < 0 ? 0 : prev - 100000000))}
                 >
                   -1억
                 </button>
                 <button
-                  className="border flex-1 text-xs md:text-base h-10 rounded"
+                  className="btn-secondary flex-1 text-xs md:text-base h-10 rounded"
+                  style={{ whiteSpace: "nowrap", minWidth: "0" }}
                   onClick={() => setFine((prev) => (prev - 10000000 < 0 ? 0 : prev - 10000000))}
                 >
                   -1000만원
                 </button>
                 <button
-                  className="border flex-1 text-xs md:text-base h-10 rounded"
+                  className="btn-secondary flex-1 text-xs md:text-base h-10 rounded"
+                  style={{ whiteSpace: "nowrap", minWidth: "0" }}
                   onClick={() => setFine((prev) => (prev - 1000000 < 0 ? 0 : prev - 1000000))}
                 >
                   -100만원
                 </button>
-                <button className="border flex-1 text-xs md:text-base h-10 rounded" onClick={() => setFine((prev) => (prev - 100000 < 0 ? 0 : prev - 100000))}>
+                <button
+                  className="btn-secondary flex-1 text-xs md:text-base h-10 rounded"
+                  style={{ whiteSpace: "nowrap", minWidth: "0" }}
+                  onClick={() => setFine((prev) => (prev - 100000 < 0 ? 0 : prev - 100000))}
+                >
                   -10만원
                 </button>
               </div>
@@ -692,33 +790,106 @@ const CasePage = () => {
         <div className="sentencePart flex justify-center items-center w-[90%] md:w-[50%] mx-auto h-45">
           {isSentenced ? (
             <div className="w-[90%] md:w-[50%] flex gap-10">
-              <div className="flex flex-col w-[50%] bg-gray-200 text-black p-2">
-                <div className="w-full text-center border-b pb-2 text-xl">실제 판결</div>
-                <div className="w-full text-center py-2">{caseData?.caseResult}</div>
-                {caseData?.caseResult2 !== "" && <div className="w-full text-center py-2">집행유예 {caseData?.caseResult2}</div>}
+              <div
+                className="flex flex-col w-[50%] p-2 rounded-lg"
+                style={{
+                  backgroundColor: "var(--bg-secondary)",
+                  border: "1px solid var(--border-secondary)",
+                }}
+              >
+                <div
+                  className="w-full text-center pb-2 text-xl font-semibold"
+                  style={{
+                    borderBottom: "1px solid var(--border-primary)",
+                    color: "var(--text-emphasis)",
+                  }}
+                >
+                  실제 판결
+                </div>
+                <div className="w-full text-center py-2" style={{ color: "var(--text-primary)" }}>
+                  {caseData?.caseResult}
+                </div>
+                {caseData?.caseResult2 !== "" && (
+                  <div className="w-full text-center py-2" style={{ color: "var(--text-secondary)" }}>
+                    집행유예 {caseData?.caseResult2}
+                  </div>
+                )}
               </div>
-              <div className="flex flex-col w-[50%] p-2 border">
-                <div className="w-full text-center border-b pb-2 text-xl">나의 판결</div>
-                <div className="w-full text-center py-2">
+              <div className="flex flex-col w-[50%] p-2 rounded-lg" style={{ border: "1px solid var(--accent-primary)" }}>
+                <div
+                  className="w-full text-center pb-2 text-xl font-semibold"
+                  style={{
+                    borderBottom: "1px solid var(--border-primary)",
+                    color: "var(--accent-primary)",
+                  }}
+                >
+                  나의 판결
+                </div>
+                <div className="w-full text-center py-2" style={{ color: "var(--text-primary)" }}>
                   {mode === 0 ? "징역" + " " + year + "년" + " " + (month !== 0 ? month + "개월" : "") : "벌금" + " " + fine + "원"}
                 </div>
-                {suspend !== 0 && <div className="w-full text-center py-2">집행유예 {suspend}년</div>}
+                {suspend !== 0 && (
+                  <div className="w-full text-center py-2" style={{ color: "var(--text-secondary)" }}>
+                    집행유예 {suspend}년
+                  </div>
+                )}
               </div>
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center">
               <div className="blankSpace h-10"></div>
-              <MdGavel size={60} className="cursor-pointer" onClick={() => verdict()} />
+              <MdGavel
+                size={60}
+                className="cursor-pointer transition-all duration-150"
+                style={{ color: "var(--accent-primary)" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--accent-secondary)";
+                  e.currentTarget.style.transform = "scale(1.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--accent-primary)";
+                  e.currentTarget.style.transform = "scale(1)";
+                }}
+                onClick={() => verdict()}
+              />
               <div className="blankSpace h-4"></div>
-              <div className="w-full flex justify-center my-4 cursor-default text-gray-400 text-sm">선고 후에 실제 판결을 확인할 수 있습니다</div>
+              <div className="w-full flex justify-center my-4 cursor-default text-sm" style={{ color: "var(--text-tertiary)" }}>
+                선고 후에 실제 판결을 확인할 수 있습니다
+              </div>
             </div>
           )}
         </div>
         <div className="w-full md:w-[50%] mx-auto h-10 mb-20 flex justify-between items-center mt-4">
-          <button className={`text-sm md:text-base ${caseNumber === 1 ? "text-gray-500" : "active:font-bold"}`} onClick={async () => pastCase()}>
+          <button
+            className={`text-sm md:text-base transition-all duration-150 ${caseNumber === 1 ? "" : "hover:font-semibold"}`}
+            style={{
+              color: caseNumber === 1 ? "var(--text-tertiary)" : "var(--text-secondary)",
+              cursor: caseNumber === 1 ? "not-allowed" : "pointer",
+            }}
+            onMouseEnter={(e) => {
+              if (caseNumber !== 1) e.currentTarget.style.color = "var(--text-primary)";
+            }}
+            onMouseLeave={(e) => {
+              if (caseNumber !== 1) e.currentTarget.style.color = "var(--text-secondary)";
+            }}
+            onClick={async () => pastCase()}
+          >
             이전 사건
           </button>
-          <button className={`text-sm md:text-base ${caseNumber === latestCaseNumber ? "text-gray-500" : "active:font-bold"}`} onClick={async () => nextCase()}>
+          <button
+            className={`text-sm md:text-base transition-all duration-150 ${caseNumber === latestCaseNumber ? "" : "hover:font-semibold"}`}
+            style={{
+              color: caseNumber === latestCaseNumber ? "var(--text-tertiary)" : "var(--text-secondary)",
+              cursor: caseNumber === latestCaseNumber ? "not-allowed" : "pointer",
+            }}
+            onMouseEnter={(e) => {
+              if (caseNumber !== latestCaseNumber) e.currentTarget.style.color = "var(--text-primary)";
+            }}
+            onMouseLeave={(e) => {
+              if (caseNumber !== latestCaseNumber) e.currentTarget.style.color = "var(--text-secondary)";
+            }}
+            onClick={async () => nextCase()}
+          >
             다음 사건
           </button>
         </div>

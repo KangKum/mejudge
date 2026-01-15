@@ -52,22 +52,52 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center">
+    <div className="w-full h-full flex flex-col justify-center items-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="blankSpace w-full h-20"></div>
-      <form onSubmit={handleLogin} className="w-[500px] h-[200px] flex flex-col items-center">
-        <input type="text" placeholder="아이디" className="mb-4 p-2 border rounded w-[250px]" value={id} onChange={(e) => setId(e.target.value)} />
+      <form
+        onSubmit={handleLogin}
+        className="w-[90%] md:w-[500px] flex flex-col items-center p-6 rounded-xl"
+        style={{
+          backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid var(--border-primary)'
+        }}
+      >
+        <input
+          type="text"
+          placeholder="아이디"
+          className="mb-4 p-3 rounded-lg w-full md:w-[250px] transition-all duration-150"
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+          onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
+        />
         <input
           type="password"
           placeholder="비밀번호"
-          className="mb-4 p-2 border rounded w-[250px]"
+          className="mb-4 p-3 rounded-lg w-full md:w-[250px] transition-all duration-150"
+          style={{
+            backgroundColor: 'var(--bg-tertiary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-primary)'
+          }}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+          onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
         />
-        <button type="submit" className="bg-blue-600 text-white p-2 rounded w-[250px]">
+        <button type="submit" className="btn-primary w-full md:w-[250px]">
           로그인
         </button>
       </form>
-      <button onClick={() => navigate("/signup")}>회원가입</button>
+      <div className="blankSpace h-4"></div>
+      <button className="btn-ghost" onClick={() => navigate("/signup")}>
+        회원가입
+      </button>
     </div>
   );
 };
