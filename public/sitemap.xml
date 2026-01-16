@@ -3,13 +3,38 @@
 
   <url>
     <loc>https://mejudge.com/</loc>
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
   </url>
 
-    <url>
+  <url>
     <loc>https://mejudge.com/about</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://mejudge.com/main</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
   </url>
+
+  <url>
+    <loc>https://mejudge.com/rank</loc>
+    <priority>0.7</priority>
+    <changefreq>daily</changefreq>
+  </url>
+
+  <url>
+    <loc>https://mejudge.com/login</loc>
+    <priority>0.5</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://mejudge.com/signup</loc>
+    <priority>0.5</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+
 </urlset>

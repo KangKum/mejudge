@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa6";
@@ -6,6 +6,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { FaMedal } from "react-icons/fa";
 import { MdGavel } from "react-icons/md";
 import { Helmet } from "react-helmet-async";
+import { MEDAL_THRESHOLD, INITIAL_COMMENT_LIMIT, COMMENT_LOAD_INCREMENT, STORAGE_KEYS, SENTENCE_LIMITS, MAX_COMMENT_LENGTH } from "../constants";
 
 interface ICaseItem {
   _id: string;
@@ -16,7 +17,7 @@ interface ICaseItem {
   caseResult2: string;
 }
 interface IComment {
-  _id: String;
+  _id: string;
   userNickname: string;
   comment: string;
   createdAt: string;
@@ -36,17 +37,17 @@ const CasePage = () => {
   const [suspend, setSuspend] = useState(0);
   const [mode, setMode] = useState(0); // 0: 징역형, 1: 벌금형
   const [fine, setFine] = useState(0);
-  const Ymax = 50;
-  const Ymin = 0;
-  const Mmax = 11;
-  const Mmin = 0;
+  const Ymax = SENTENCE_LIMITS.YEAR_MAX;
+  const Ymin = SENTENCE_LIMITS.YEAR_MIN;
+  const Mmax = SENTENCE_LIMITS.MONTH_MAX;
+  const Mmin = SENTENCE_LIMITS.MONTH_MIN;
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Array<IComment>>([]);
-  const [commentLimit, setCommentLimit] = useState(3);
+  const [commentLimit, setCommentLimit] = useState(INITIAL_COMMENT_LIMIT);
   const [commentCount, setCommentCount] = useState(0);
-  const token = localStorage.getItem("MJKRtoken");
+  const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
   const { userId } = token ? jwtDecode<{ userId: string }>(token) : {};
-  const userNickname = localStorage.getItem("MJKRnickname") || "";
+  const userNickname = localStorage.getItem(STORAGE_KEYS.NICKNAME) || "";
   const caseNumber = caseData?.caseNumber;
   const [latestCaseNumber, setLatestCaseNumber] = useState<number>(0);
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
@@ -80,7 +81,7 @@ const CasePage = () => {
     setIsCommenting(true);
     const res = await fetch(`${apiUrl}/api/comment/${userId}/${caseId}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN)}` },
       body: JSON.stringify({ userNickname, comment }),
     });
     if (res.ok) {
@@ -153,7 +154,7 @@ const CasePage = () => {
       alert("닉네임 변경에 실패했습니다.");
     }
   };
-  const formattedDate = (dateString: string) => {
+  const formattedDate = useCallback((dateString: string) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -163,8 +164,8 @@ const CasePage = () => {
 
     const formatted = `${year}. ${month}. ${day} ${hour}:${min}`;
     return formatted;
-  };
-  const makeLike = async ({ comment }: { comment: IComment }) => {
+  }, []);
+  const makeLike = useCallback(async ({ comment }: { comment: IComment }) => {
     if (!userId) {
       alert("로그인이 필요합니다.");
       navigate("/login");
@@ -180,7 +181,7 @@ const CasePage = () => {
     try {
       const res = await fetch(`${apiUrl}/api/like/${comment._id}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN)}` },
         body: JSON.stringify({ userId }),
       });
       if (res.status !== 200) {
@@ -190,8 +191,8 @@ const CasePage = () => {
     } catch (error) {
       console.error("Error liking comment:", error);
     }
-  };
-  const makeDislike = async ({ comment }: { comment: IComment }) => {
+  }, [userId, apiUrl, navigate]);
+  const makeDislike = useCallback(async ({ comment }: { comment: IComment }) => {
     if (!userId) {
       alert("로그인이 필요합니다.");
       navigate("/login");
@@ -206,7 +207,7 @@ const CasePage = () => {
     try {
       const res = await fetch(`${apiUrl}/api/dislike/${comment._id}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN)}` },
         body: JSON.stringify({ userId }),
       });
       if (res.status !== 200) {
@@ -216,7 +217,7 @@ const CasePage = () => {
     } catch (error) {
       console.error("Error liking comment:", error);
     }
-  };
+  }, [userId, apiUrl, navigate]);
   const pastCase = async () => {
     if (caseNumber === 1) return;
     try {
@@ -284,13 +285,13 @@ const CasePage = () => {
       const data = await res.json();
       if (res.ok) {
         alert("선고가 완료되었습니다.");
+        setIsSentenced(true);
       } else {
         alert(data.message || "선고 실패");
       }
     } catch (error) {
       console.error("Error submitting sentence:", error);
     }
-    window.location.reload();
   };
   const markAsRead = async () => {
     if (!userId || !caseId) return;
@@ -376,14 +377,28 @@ const CasePage = () => {
 
   useEffect(() => {
     //현재 로그인한 유저가 관리자인지 확인
-    const adminId = import.meta.env.VITE_ADMIN_ID;
-    if (userId === adminId) {
-      setIsAdmin(true);
-    }
+    const checkAdmin = async () => {
+      if (!userId) return;
+      try {
+        const res = await fetch(`${apiUrl}/api/check-admin`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}`,
+          },
+        });
+        const data = await res.json();
+        if (res.status === 200 && data.isAdmin) {
+          setIsAdmin(true);
+        }
+      } catch (error) {
+        console.error("Error checking admin status:", error);
+      }
+    };
+    checkAdmin();
   }, [userId]);
 
   useEffect(() => {
-    if ((year >= 3 && month !== 0) || (year === 0 && month === 0) || year >= 4) {
+    if ((year >= SENTENCE_LIMITS.SUSPEND_MIN_REQUIREMENT_YEARS && month !== 0) || (year === 0 && month === 0) || year >= SENTENCE_LIMITS.SUSPEND_MAX_YEARS) {
       setSuspend(0);
     }
   }, [year, month]);
@@ -473,6 +488,7 @@ const CasePage = () => {
             <img
               src={`${imgUrl}/cases/${caseData.caseNumber}/case${caseData.caseNumber}_1.webp`}
               alt="case image"
+              loading="lazy"
               style={{ border: "1px solid var(--border-primary)" }}
             />
           )}
@@ -502,7 +518,7 @@ const CasePage = () => {
               className={`textPart w-full h-24 mx-auto p-2 rounded ${userId ? "" : "cursor-default"}`}
               spellCheck={false}
               placeholder={`${userId ? "댓글을 입력하세요" : "로그인이 필요합니다."}`}
-              maxLength={300}
+              maxLength={MAX_COMMENT_LENGTH}
               value={comment}
               style={{
                 backgroundColor: "var(--bg-tertiary)",
@@ -528,11 +544,11 @@ const CasePage = () => {
               <div key={index} className="commentItem flex flex-col px-2 mt-2 pb-2 rounded-lg" style={{ borderBottom: "1px solid var(--border-primary)" }}>
                 <div className="commentUser text-sm md:text-base flex">
                   <span className="flex justify-center items-center">
-                    {index === 0 && comment.likes.length > 2 ? (
+                    {index === 0 && comment.likes.length > MEDAL_THRESHOLD ? (
                       <FaMedal color="#FFD700" size={12} />
-                    ) : index === 1 && comment.likes.length > 2 ? (
+                    ) : index === 1 && comment.likes.length > MEDAL_THRESHOLD ? (
                       <FaMedal color="#C0C0C0" size={12} />
-                    ) : index === 2 && comment.likes.length > 2 ? (
+                    ) : index === 2 && comment.likes.length > MEDAL_THRESHOLD ? (
                       <FaMedal color="#CD7F32" size={12} />
                     ) : null}
                   </span>
@@ -617,7 +633,7 @@ const CasePage = () => {
                 e.currentTarget.style.backgroundColor = "transparent";
                 e.currentTarget.style.color = "var(--text-secondary)";
               }}
-              onClick={() => setCommentLimit((prev) => prev + 10)}
+              onClick={() => setCommentLimit((prev) => prev + COMMENT_LOAD_INCREMENT)}
             >
               <span>
                 <IoIosArrowDown size={18} />

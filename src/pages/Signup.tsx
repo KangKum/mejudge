@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Signup = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -61,6 +62,14 @@ const Signup = () => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <Helmet>
+        <title>회원가입 | 나의 판결</title>
+        <meta
+          name="description"
+          content="나의 판결에 가입하고 실제 판결문을 읽으며 직접 형량을 판단해보세요. 간편한 회원가입으로 지금 바로 시작하세요."
+        />
+        <link rel="canonical" href="https://mejudge.com/signup" />
+      </Helmet>
       <div className="blankSpace w-full h-15"></div>
       <form
         onSubmit={handleSignup}

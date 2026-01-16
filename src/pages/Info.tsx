@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import { MdGavel } from "react-icons/md";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa6";
 import { FaCommentAlt } from "react-icons/fa";
+import { Helmet } from "react-helmet-async";
 
 const Info = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -187,13 +188,35 @@ const Info = () => {
 
   useEffect(() => {
     //현재 로그인한 유저가 관리자인지 확인
-    const adminId = import.meta.env.VITE_ADMIN_ID;
-    if (userId === adminId) {
-      setIsAdmin(true);
-    }
+    const checkAdmin = async () => {
+      if (!userId) return;
+      try {
+        const res = await fetch(`${apiUrl}/api/check-admin`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("MJKRtoken")}`,
+          },
+        });
+        const data = await res.json();
+        if (res.status === 200 && data.isAdmin) {
+          setIsAdmin(true);
+        }
+      } catch (error) {
+        console.error("Error checking admin status:", error);
+      }
+    };
+    checkAdmin();
   }, [userId]);
   return (
     <div className="flex flex-col h-full items-center cursor-default" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <Helmet>
+        <title>마이페이지 | 나의 판결</title>
+        <meta
+          name="description"
+          content="나의 판결 활동 내역을 확인하세요. 선고한 사건 수, 작성한 댓글, 받은 좋아요와 싫어요를 한눈에 볼 수 있습니다."
+        />
+        <link rel="canonical" href="https://mejudge.com/info" />
+      </Helmet>
       <div className="blankSpace w-full h-20 md:h-45"></div>
       <div className="flex flex-col items-center w-[45%] md:w-[35%]">
         <div className="w-full md:h-30 flex flex-col md:flex-row md:justify-between gap-3">

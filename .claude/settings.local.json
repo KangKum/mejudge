@@ -7,7 +7,11 @@
       "Bash(curl:*)",
       "Bash(tasklist:*)",
       "Bash(findstr:*)",
-      "Bash(netstat:*)"
+      "Bash(netstat:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npm run lint)"
     ]
   }
 }

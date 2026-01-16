@@ -1,0 +1,9 @@
+# 나의 판결 - robots.txt
+
+User-agent: *
+Allow: /
+Disallow: /master20251208
+Disallow: /info
+
+# Sitemap 위치
+Sitemap: https://mejudge.com/sitemap.xml

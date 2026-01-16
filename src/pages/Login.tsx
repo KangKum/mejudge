@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -53,6 +54,14 @@ const Login = () => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <Helmet>
+        <title>로그인 | 나의 판결</title>
+        <meta
+          name="description"
+          content="나의 판결에 로그인하여 사건을 판결하고 다른 사용자들과 의견을 나눠보세요."
+        />
+        <link rel="canonical" href="https://mejudge.com/login" />
+      </Helmet>
       <div className="blankSpace w-full h-20"></div>
       <form
         onSubmit={handleLogin}

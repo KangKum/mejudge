@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaThumbsUp } from "react-icons/fa6";
+import { Helmet } from "react-helmet-async";
 
 const Rank = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -36,6 +37,14 @@ const Rank = () => {
 
   return (
     <div className="md:w-[40%] w-[85%] h-full flex flex-col mx-auto" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <Helmet>
+        <title>댓글 좋아요 랭킹 | 나의 판결</title>
+        <meta
+          name="description"
+          content="나의 판결 커뮤니티에서 가장 많은 좋아요를 받은 유저들의 랭킹을 확인하세요. 매일 오후 9시 갱신됩니다."
+        />
+        <link rel="canonical" href="https://mejudge.com/rank" />
+      </Helmet>
       <div className="blankSpace h-2 md:h-3"></div>
       <div className="w-full h-full flex flex-col items-center">
         <div
