@@ -1,8 +1,12 @@
 const PrivacyForm = ({ setShowPrivacyForm }: { setShowPrivacyForm: React.Dispatch<React.SetStateAction<boolean>> }) => {
   return (
-    <div className="overlay" onClick={() => setShowPrivacyForm(false)}>
+    <div
+      className="overlay"
+      style={{ overflowY: 'auto' }}
+      onClick={() => setShowPrivacyForm(false)}
+    >
       <div
-        className="w-[90%] h-[700px] md:w-[45%] md:h-[700px] mx-auto mt-20 p-4 rounded-xl overflow-y-auto overscroll-contain touch-pan-y"
+        className="w-[90%] md:w-[45%] mx-auto mt-20 mb-20 p-4 rounded-xl overflow-y-auto overscroll-contain touch-pan-y"
         style={{
           backgroundColor: 'var(--bg-secondary)',
           border: '1px solid var(--border-primary)',
