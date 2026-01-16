@@ -91,7 +91,12 @@ const Header = () => {
       </div>
       <div className="loginPart md:w-[10%] h-full flex justify-end items-center">
         <button
-          className="btn-primary flex items-center justify-end mr-2 md:mr-4 rounded text-xs md:text-base px-2 py-0.5 md:px-3 md:py-1 font-medium"
+          className="flex items-center justify-end mr-2 md:mr-4 rounded text-xs md:text-base font-medium h-6 md:h-auto px-2 md:px-3"
+          style={{
+            backgroundColor: 'var(--accent-primary)',
+            color: 'var(--text-emphasis)',
+            border: 'none'
+          }}
           onClick={() => {
             if (isLoggedIn) {
               navigate("/info");
