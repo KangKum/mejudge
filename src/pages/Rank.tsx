@@ -56,19 +56,19 @@ const Rank = () => {
         >
           <div
             className="w-[20%] h-full flex justify-center items-center md:text-lg cursor-default"
-            style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}
+            style={{ fontFamily: 'var(--font-primary)', color: 'var(--text-primary)' }}
           >
             순위
           </div>
           <div
             className="w-[60%] h-full flex justify-center items-center md:text-lg cursor-default"
-            style={{ color: 'var(--text-primary)' }}
+            style={{ fontFamily: 'var(--font-primary)', color: 'var(--text-primary)' }}
           >
             닉네임
           </div>
           <div
             className="w-[20%] h-full flex justify-center items-center md:text-lg cursor-default"
-            style={{ color: 'var(--accent-primary)' }}
+            style={{ fontFamily: 'var(--font-primary)', color: 'var(--accent-primary)' }}
           >
             <FaThumbsUp />
           </div>
@@ -77,13 +77,13 @@ const Rank = () => {
           <>
             <h1
               className="my-20 text-xl font-bold cursor-default transition-all duration-150"
-              style={{ color: 'var(--text-secondary)' }}
+              style={{ fontFamily: 'var(--font-primary)', color: 'var(--text-secondary)' }}
               onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
               onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
             >
               오후 9시마다 갱신됩니다
             </h1>
-            <div className="w-full flex justify-center" style={{ color: 'var(--text-secondary)' }}>
+            <div className="w-full flex justify-center" style={{ fontFamily: 'var(--font-primary)', color: 'var(--text-secondary)' }}>
               {loadingText}
             </div>
           </>
@@ -100,19 +100,19 @@ const Rank = () => {
               >
                 <div
                   className="w-[20%] h-full flex justify-center items-center"
-                  style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}
+                  style={{ fontFamily: 'var(--font-primary)', color: 'var(--text-primary)' }}
                 >
                   {index + 1}위
                 </div>
                 <div
                   className="w-[60%] h-full flex justify-center items-center"
-                  style={{ color: 'var(--text-primary)' }}
+                  style={{ fontFamily: 'var(--font-primary)', color: 'var(--text-primary)' }}
                 >
                   {user.nickname}
                 </div>
                 <div
                   className="w-[20%] h-full flex justify-center items-center"
-                  style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}
+                  style={{ fontFamily: 'var(--font-primary)', color: 'var(--text-primary)' }}
                 >
                   {user.totalLikes}개
                 </div>

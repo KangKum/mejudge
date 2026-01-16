@@ -1,9 +1,10 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { STORAGE_KEYS } from "../constants";
 
 const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const isLoggedIn = !!localStorage.getItem("MJKRtoken");
+  const isLoggedIn = !!localStorage.getItem(STORAGE_KEYS.TOKEN);
 
   return (
     <header
@@ -101,7 +102,7 @@ const Header = () => {
         >
           {isLoggedIn ? (
             <span>
-              {localStorage.getItem("MJKRnickname")}
+              {localStorage.getItem(STORAGE_KEYS.NICKNAME)}
             </span>
           ) : (
             "로그인"
