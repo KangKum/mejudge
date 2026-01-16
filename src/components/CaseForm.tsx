@@ -88,12 +88,16 @@ const CaseForm = ({ setShowCaseForm }: { setShowCaseForm: React.Dispatch<React.S
   };
 
   return (
-    <div className="overlay overflow-y-auto overscroll-contain touch-pan-y" onClick={() => confirm("사건 등록을 취소하시겠습니까?") && setShowCaseForm(false)}>
+    <div
+      className="overlay overflow-y-auto overscroll-contain touch-pan-y"
+      style={{ overflowY: 'auto' }}
+      onClick={() => confirm("사건 등록을 취소하시겠습니까?") && setShowCaseForm(false)}
+    >
       <Helmet>
         <meta name="robots" content="noindex,nofollow" />
       </Helmet>
       <div
-        className="w-[380px] md:w-[800px] mx-auto mt-20 p-4 rounded-xl"
+        className="w-[380px] md:w-[800px] mx-auto mt-20 mb-20 p-4 rounded-xl"
         style={{
           backgroundColor: 'var(--bg-secondary)',
           border: '1px solid var(--border-primary)'
